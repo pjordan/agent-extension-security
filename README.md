@@ -9,113 +9,52 @@
 
 Open-source reference implementation for supply chain security in agent ecosystems (skills, MCP servers, plugins, connectors).
 
-**Why agentsec?** See [how it compares](docs/comparison.md) to Sigstore/Cosign, npm/PyPI security, and rolling your own.
+## Why agentsec?
 
-## What this repo provides
+- **Package → sign → verify → install** in one CLI with no external dependencies
+- **Install-time policy enforcement** — deny specific permissions before an extension runs
+- **Least-privilege defaults** — scaffolded manifests start with zero permissions
+- **Hardened archives** — symlink, path traversal, and resource-limit protections built in
 
-- `agentsec` CLI to package, sign, verify, scan, and install extensions
-- Starter manifest and policy model (AEM now, APM planned)
-- Hardened archive handling and strict manifest/policy parsing
-- Example extensions (skill + MCP placeholder)
+See [how agentsec compares](https://pjordan.github.io/agent-extension-security/comparison/) to Sigstore/Cosign, npm/PyPI security, and rolling your own.
 
-## Documentation
-
-- Docs site: https://pjordan.github.io/agent-extension-security/
-- Quickstart: `docs/quickstart.md`
-- CLI reference: `docs/cli-reference.md`
-- Security model: `docs/threat-model.md`, `docs/security-hardening.md`, `docs/permissions.md`
-- Production readiness boundaries: `docs/production-readiness.md`
-- Troubleshooting: `docs/troubleshooting.md`
-- Comparison with alternatives: `docs/comparison.md`
-
-## Install
-
-Install directly with Go (no Make required):
+## Get started in 60 seconds
 
 ```bash
 go install github.com/pjordan/agent-extension-security/cmd/agentsec@latest
-agentsec version
+agentsec init ./my-skill --id com.example.my-skill --type skill
+agentsec package ./my-skill --out my-skill.aext
+agentsec install my-skill.aext --dev --aem my-skill/aem.json --dest ./installed
 ```
 
-Or use prebuilt release archives with checksum verification:
+Ready for signing and policy enforcement? See the [full quickstart](https://pjordan.github.io/agent-extension-security/quickstart/).
 
-- `docs/install.md`
+## Documentation
 
-## Quickstart
+Full docs at **<https://pjordan.github.io/agent-extension-security/>**
 
-**Express path** — scaffold, package, and install in dev mode:
-
-```bash
-make build
-./bin/agentsec init ./my-skill --id com.example.my-skill --type skill
-./bin/agentsec package ./my-skill --out my-skill.aext
-./bin/agentsec install my-skill.aext --dev --aem my-skill/aem.json --dest ./installed
-```
-
-**Full flow** — with signing, attestations, and policy enforcement:
-
-```bash
-make build
-./bin/agentsec version
-
-mkdir -p ./_demo
-./bin/agentsec package ./examples/skills/hello-world --out ./_demo/hello-world.aext
-
-./bin/agentsec manifest init ./examples/skills/hello-world \
-  --id com.example.hello-world --type skill --version 0.1.0 --out ./_demo/aem.json
-./bin/agentsec manifest validate ./_demo/aem.json
-
-./bin/agentsec sbom ./_demo/hello-world.aext --out ./_demo/sbom.spdx.json
-./bin/agentsec provenance ./_demo/hello-world.aext \
-  --source-repo https://github.com/pjordan/agent-extension-security \
-  --source-rev "$(git rev-parse HEAD)" \
-  --out ./_demo/provenance.json
-./bin/agentsec scan ./_demo/hello-world.aext --out ./_demo/scan.json
-
-./bin/agentsec keygen --out ./_demo/devkey.json
-./bin/agentsec sign ./_demo/hello-world.aext --key ./_demo/devkey.json --out ./_demo/hello-world.sig.json
-./bin/agentsec verify ./_demo/hello-world.aext --sig ./_demo/hello-world.sig.json --pub ./_demo/devkey.json
-
-./bin/agentsec install ./_demo/hello-world.aext \
-  --sig ./_demo/hello-world.sig.json \
-  --pub ./_demo/devkey.json \
-  --aem ./_demo/aem.json \
-  --policy ./docs/policy.example.json \
-  --dest ./_demo/install
-```
-
-Or run the scripted flow:
-
-```bash
-bash scripts/demo.sh
-```
+| Topic | Link |
+|-------|------|
+| Quickstart | [quickstart](https://pjordan.github.io/agent-extension-security/quickstart/) |
+| CLI Reference | [cli-reference](https://pjordan.github.io/agent-extension-security/cli-reference/) |
+| Install & Release Verification | [install](https://pjordan.github.io/agent-extension-security/install/) |
+| Skills Guide | [skills-integration](https://pjordan.github.io/agent-extension-security/skills-integration/) |
+| Examples & Policies | [examples](https://pjordan.github.io/agent-extension-security/examples/) |
+| Security Model | [threat-model](https://pjordan.github.io/agent-extension-security/threat-model/), [security-hardening](https://pjordan.github.io/agent-extension-security/security-hardening/), [permissions](https://pjordan.github.io/agent-extension-security/permissions/) |
+| Production Readiness | [production-readiness](https://pjordan.github.io/agent-extension-security/production-readiness/) |
+| Troubleshooting | [troubleshooting](https://pjordan.github.io/agent-extension-security/troubleshooting/) |
+| Comparison | [comparison](https://pjordan.github.io/agent-extension-security/comparison/) |
 
 ## Current status
 
-This is an initial scaffold designed to be easy to extend.
-
-Implemented hardening includes:
-
-- Trusted-key verification by default (`--pub`)
-- Install-time policy enforcement (`--aem` + `--policy`)
-- Least-privilege defaults for generated manifests
-- Symlink/path/resource hardening during archive package/extract
-- Strict JSON decoding for manifest and policy files
-
-Planned production-grade additions:
-
-- Sigstore/Cosign keyless signing and identity verification
-- SLSA/in-toto provenance
-- Real SBOM generation and deeper scanning
-
-See `docs/production-readiness.md` for details.
+This is a reference scaffold — hardened where it matters, but not yet a full production supply-chain platform. See [Production Readiness](https://pjordan.github.io/agent-extension-security/production-readiness/) for the capability matrix and roadmap.
 
 ## Contributing and security
 
-- Contributing: `CONTRIBUTING.md`
-- Security policy: `SECURITY.md`
-- Code of conduct: `CODE_OF_CONDUCT.md`
+- [Contributing](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
 
 ## License
 
-Apache-2.0 (`LICENSE`).
+Apache-2.0 ([LICENSE](LICENSE)).
