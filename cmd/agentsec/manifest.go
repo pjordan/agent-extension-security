@@ -9,7 +9,15 @@ import (
 
 func runManifest(args []string) {
 	if len(args) < 1 {
-		dieIf(fmt.Errorf("usage: agentsec manifest <init|validate> <args>"))
+		fmt.Fprint(os.Stderr, `Usage: agentsec manifest <init|validate> <args>
+
+Subcommands:
+  init       Create an AEM manifest with least-privilege defaults
+  validate   Validate an existing AEM manifest
+
+Run 'agentsec manifest <subcommand> -h' for subcommand help.
+`)
+		os.Exit(2)
 	}
 	sub := args[0]
 	subArgs := args[1:]
@@ -29,6 +37,21 @@ func runManifestInit(args []string) {
 	typ := fs.String("type", "", "skill|mcp-server|plugin")
 	ver := fs.String("version", "", "version (e.g., 0.1.0)")
 	out := fs.String("out", "", "output manifest path (json)")
+	fs.Usage = func() {
+		fmt.Fprint(os.Stderr, `Usage: agentsec manifest init <dir> --id <id> --type <type> --version <ver> --out <path>
+
+Create an AEM (Agent Extension Manifest) with secure, least-privilege defaults.
+All permissions start empty/false. Edit the generated file to add only the
+permissions your extension requires.
+
+Flags:
+`)
+		fs.PrintDefaults()
+		fmt.Fprint(os.Stderr, `
+Example:
+  agentsec manifest init ./my-skill --id com.example.hello --type skill --version 0.1.0 --out aem.json
+`)
+	}
 	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 {
 		dieIf(fmt.Errorf("usage: agentsec manifest init <dir> --id <id> --type <type> --version <ver> --out <path>"))
@@ -69,6 +92,16 @@ func runManifestInit(args []string) {
 
 func runManifestValidate(args []string) {
 	fs := newFlagSet("manifest validate")
+	fs.Usage = func() {
+		fmt.Fprint(os.Stderr, `Usage: agentsec manifest validate <aem.json>
+
+Validate an existing AEM manifest. Checks schema version, required fields,
+type enum, version format, and rejects unknown fields.
+
+Example:
+  agentsec manifest validate aem.json
+`)
+	}
 	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 {
 		dieIf(fmt.Errorf("usage: agentsec manifest validate <aem.json>"))

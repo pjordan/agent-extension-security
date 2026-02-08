@@ -21,6 +21,8 @@
 - Installing binaries from releases: [Install & Release Verification](install.md)
 - Full command details: [CLI Reference](cli-reference.md)
 - Security assumptions and controls: [Security Model](threat-model.md)
+- Something not working? [Troubleshooting](troubleshooting.md)
+- How agentsec compares to alternatives: [Comparison](comparison.md)
 - Current maturity boundaries: [Production Readiness](production-readiness.md)
 
 ## Project status

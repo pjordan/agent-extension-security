@@ -5,7 +5,7 @@ DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 LDFLAGS=-X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(DATE)
 GO_BUILD_FLAGS=-trimpath -ldflags "$(LDFLAGS)"
 
-.PHONY: build install test cover docs-smoke fmt fmt-check lint hooks clean
+.PHONY: build install test cover docs-smoke examples-test fmt fmt-check lint hooks clean
 
 build:
 	@mkdir -p bin
@@ -25,6 +25,9 @@ cover:
 
 docs-smoke: build
 	bash scripts/docs-smoke.sh
+
+examples-test:
+	bash scripts/examples-smoke.sh
 
 fmt:
 	gofmt -w .

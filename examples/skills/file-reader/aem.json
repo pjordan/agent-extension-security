@@ -1,0 +1,20 @@
+{
+  "schema": "aessf.dev/aem/v0",
+  "id": "com.example.file-reader",
+  "type": "skill",
+  "version": "0.1.0",
+  "permissions": {
+    "files": {
+      "read": ["~/.config/*"],
+      "write": []
+    },
+    "network": {
+      "domains": [],
+      "allow_ip_literals": false
+    },
+    "process": {
+      "allow_shell": true,
+      "allow_subprocess": false
+    }
+  }
+}

@@ -9,6 +9,8 @@
 
 Open-source reference implementation for supply chain security in agent ecosystems (skills, MCP servers, plugins, connectors).
 
+**Why agentsec?** See [how it compares](docs/comparison.md) to Sigstore/Cosign, npm/PyPI security, and rolling your own.
+
 ## What this repo provides
 
 - `agentsec` CLI to package, sign, verify, scan, and install extensions
@@ -23,6 +25,8 @@ Open-source reference implementation for supply chain security in agent ecosyste
 - CLI reference: `docs/cli-reference.md`
 - Security model: `docs/threat-model.md`, `docs/security-hardening.md`, `docs/permissions.md`
 - Production readiness boundaries: `docs/production-readiness.md`
+- Troubleshooting: `docs/troubleshooting.md`
+- Comparison with alternatives: `docs/comparison.md`
 
 ## Install
 
@@ -38,6 +42,17 @@ Or use prebuilt release archives with checksum verification:
 - `docs/install.md`
 
 ## Quickstart
+
+**Express path** — scaffold, package, and install in dev mode:
+
+```bash
+make build
+./bin/agentsec init ./my-skill --id com.example.my-skill --type skill
+./bin/agentsec package ./my-skill --out my-skill.aext
+./bin/agentsec install my-skill.aext --dev --aem my-skill/aem.json --dest ./installed
+```
+
+**Full flow** — with signing, attestations, and policy enforcement:
 
 ```bash
 make build

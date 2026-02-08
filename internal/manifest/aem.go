@@ -48,16 +48,16 @@ var semverPattern = regexp.MustCompile(`^[0-9]+\.[0-9]+\.[0-9]+(?:[-+][0-9A-Za-z
 func LoadAEM(path string) (*AEM, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("load manifest %s: %w", path, err)
 	}
 	var m AEM
 	dec := json.NewDecoder(bytes.NewReader(b))
 	dec.DisallowUnknownFields()
 	if err := dec.Decode(&m); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("load manifest %s: %w", path, err)
 	}
 	if err := dec.Decode(&struct{}{}); err != io.EOF {
-		return nil, fmt.Errorf("manifest must contain a single JSON object")
+		return nil, fmt.Errorf("load manifest %s: manifest must contain a single JSON object", path)
 	}
 	return &m, nil
 }

@@ -23,6 +23,8 @@ func main() {
 	switch cmd {
 	case "version":
 		fmt.Println(versionString())
+	case "init":
+		runInit(args)
 	case "keygen":
 		runKeygen(args)
 	case "package":
@@ -67,17 +69,33 @@ func usage() {
 	fmt.Print(`agentsec - agent extension security (scaffold)
 
 Usage:
-  agentsec version
-  agentsec keygen --out <file>
-  agentsec package <dir> --out <artifact.aext>
-  agentsec manifest init <dir> --id <id> --type <skill|mcp-server|plugin> --version <ver> --out <aem.json>
-  agentsec manifest validate <aem.json>
-  agentsec sbom <artifact.aext> --out <sbom.spdx.json>
-  agentsec provenance <artifact.aext> --source-repo <url> --source-rev <rev> --out <provenance.json>
-  agentsec scan <artifact.aext> --out <scan.json>
-  agentsec sign <artifact.aext> --key <devkey.json> --out <sig.json>
-  agentsec verify <artifact.aext> --sig <sig.json> (--pub <pubkey.json> | --allow-embedded-key)
-  agentsec install <artifact.aext> --sig <sig.json> (--pub <pubkey.json> | --allow-embedded-key) --aem <aem.json> --policy <policy.json> --dest <dir>
+  agentsec <command> [flags]
+
+Setup:
+  init                Scaffold a new extension project (manifest + key + policy)
+  keygen              Generate an Ed25519 dev signing keypair
+
+Build:
+  package             Package a directory into an .aext artifact
+  manifest init       Create an AEM manifest with least-privilege defaults
+  manifest validate   Validate an existing AEM manifest
+
+Attest:
+  sbom                Generate a reference SBOM for an artifact
+  provenance          Generate reference provenance for an artifact
+  scan                Heuristic scan of an artifact for risky patterns
+
+Security:
+  sign                Sign an artifact with an Ed25519 dev key
+  verify              Verify an artifact's signature
+
+Deploy:
+  install             Verify, evaluate policy, and extract an artifact
+
+Other:
+  version             Print version information
+
+Run 'agentsec <command> -h' for help on a specific command.
 
 Notes:
   - This initial scaffold uses local ed25519 dev keys.

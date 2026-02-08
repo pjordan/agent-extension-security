@@ -1,0 +1,13 @@
+{
+  "mode": "enforce",
+  "permissions": {
+    "deny": {
+      "network": {
+        "allow_ip_literals": true
+      },
+      "process": {
+        "allow_shell": true
+      }
+    }
+  }
+}

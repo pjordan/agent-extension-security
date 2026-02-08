@@ -30,17 +30,17 @@ func GenerateDevKeypair() (*DevKeyFile, error) {
 func LoadDevKey(path string) (*DevKeyFile, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("load key %s: %w", path, err)
 	}
 	var k DevKeyFile
 	if err := json.Unmarshal(b, &k); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("load key %s: %w", path, err)
 	}
 	if k.Type != "ed25519" {
-		return nil, fmt.Errorf("unsupported key type: %s", k.Type)
+		return nil, fmt.Errorf("load key %s: unsupported key type: %s", path, k.Type)
 	}
 	if k.Public == "" {
-		return nil, fmt.Errorf("missing public key")
+		return nil, fmt.Errorf("load key %s: missing public key", path)
 	}
 	return &k, nil
 }

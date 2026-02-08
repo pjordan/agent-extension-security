@@ -47,6 +47,25 @@ func TestEvaluate(t *testing.T) {
 	})
 }
 
+func TestDefaultPermissivePolicy(t *testing.T) {
+	p := DefaultPermissivePolicy()
+	if p.Mode != "warn" {
+		t.Fatalf("Mode = %q, want warn", p.Mode)
+	}
+
+	// Should produce no findings for any manifest since there are no deny rules.
+	a := &manifest.AEM{
+		Permissions: manifest.Permissions{
+			Network: manifest.NetPerms{AllowIPLiterals: true},
+			Process: manifest.ProcessPerm{AllowShell: true, AllowSubprocess: true},
+		},
+	}
+	findings := Evaluate(p, a)
+	if len(findings) != 0 {
+		t.Fatalf("Evaluate() = %v, want no findings", findings)
+	}
+}
+
 func TestLoadPolicy(t *testing.T) {
 	t.Run("defaults mode to enforce", func(t *testing.T) {
 		p := filepath.Join(t.TempDir(), "policy.json")
