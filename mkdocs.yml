@@ -1,0 +1,33 @@
+site_name: Agent Extension Security
+site_description: Reference implementation for securing agent extensions (skills, MCP servers, plugins)
+site_url: https://pjordan.github.io/agent-extension-security/
+repo_url: https://github.com/pjordan/agent-extension-security
+repo_name: pjordan/agent-extension-security
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+plugins:
+  - search
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+nav:
+  - Home: index.md
+  - Quickstart: quickstart.md
+  - Install & Release Verification: install.md
+  - CLI Reference: cli-reference.md
+  - Security Model:
+      - Threat Model: threat-model.md
+      - Security Hardening: security-hardening.md
+      - Permissions & Policy: permissions.md
+      - Sigstore Plan: sigstore.md
+  - Specs:
+      - AEM Schema: spec-aem.md
+      - APM Schema: spec-apm.md
+  - Production Readiness: production-readiness.md

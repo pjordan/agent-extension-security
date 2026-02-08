@@ -6,6 +6,10 @@ dist/
 .cache/
 .golangci-cache/
 .cover_internal.out
+site/
+.venv/
+Library/
+go/
 
 # macOS
 .DS_Store

@@ -29,7 +29,7 @@ func runManifestInit(args []string) {
 	typ := fs.String("type", "", "skill|mcp-server|plugin")
 	ver := fs.String("version", "", "version (e.g., 0.1.0)")
 	out := fs.String("out", "", "output manifest path (json)")
-	dieIf(fs.Parse(args))
+	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 {
 		dieIf(fmt.Errorf("usage: agentsec manifest init <dir> --id <id> --type <type> --version <ver> --out <path>"))
 	}
@@ -69,7 +69,7 @@ func runManifestInit(args []string) {
 
 func runManifestValidate(args []string) {
 	fs := newFlagSet("manifest validate")
-	dieIf(fs.Parse(args))
+	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 {
 		dieIf(fmt.Errorf("usage: agentsec manifest validate <aem.json>"))
 	}

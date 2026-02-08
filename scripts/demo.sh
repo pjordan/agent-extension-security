@@ -28,9 +28,14 @@ echo "[6/8] Scan"
 echo "[7/8] Sign + verify"
 "${BIN}" keygen --out "${ROOT}/_demo/devkey.json"
 "${BIN}" sign "${ROOT}/_demo/hello-world.aext" --key "${ROOT}/_demo/devkey.json" --out "${ROOT}/_demo/hello-world.sig.json"
-"${BIN}" verify "${ROOT}/_demo/hello-world.aext" --sig "${ROOT}/_demo/hello-world.sig.json"
+"${BIN}" verify "${ROOT}/_demo/hello-world.aext" --sig "${ROOT}/_demo/hello-world.sig.json" --pub "${ROOT}/_demo/devkey.json"
 
 echo "[8/8] Install"
-"${BIN}" install "${ROOT}/_demo/hello-world.aext" --sig "${ROOT}/_demo/hello-world.sig.json" --dest "${ROOT}/_demo/install"
+"${BIN}" install "${ROOT}/_demo/hello-world.aext" \
+  --sig "${ROOT}/_demo/hello-world.sig.json" \
+  --pub "${ROOT}/_demo/devkey.json" \
+  --aem "${ROOT}/_demo/aem.json" \
+  --policy "${ROOT}/docs/policy.example.json" \
+  --dest "${ROOT}/_demo/install"
 
 echo "Demo complete. See ${ROOT}/_demo/"

@@ -24,7 +24,7 @@ type RefSBOM struct {
 func runSBOM(args []string) {
 	fs := newFlagSet("sbom")
 	out := fs.String("out", "", "output sbom json path")
-	dieIf(fs.Parse(args))
+	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 || *out == "" {
 		dieIf(fmt.Errorf("usage: agentsec sbom <artifact.aext> --out <sbom.json>"))
 	}

@@ -59,6 +59,7 @@ Usage:
 
 Notes:
   - This initial scaffold uses local ed25519 dev keys.
+  - Flags may be provided before or after positional arguments.
   - See docs/sigstore.md for how Sigstore/Cosign fits in for production signing.
 `)
 }

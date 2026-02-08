@@ -7,9 +7,21 @@ Thanks for contributing! This repo is intentionally small and easy to extend.
 - Go 1.22+
 - `make build` builds `./bin/agentsec`
 - `make test` runs unit tests
+- `bash scripts/docs-smoke.sh` runs the documented quickstart flow
 - `make fmt-check` verifies formatting
 - `make lint` runs static analysis (`golangci-lint`)
 - `make hooks` enables local pre-commit checks
+
+## Documentation workflow
+
+- Docs source lives under `docs/` and is built with MkDocs Material.
+- Install docs tooling with `pip install -r docs/requirements.txt`.
+- Run `mkdocs build --strict` locally before larger docs PRs.
+- Keep command examples copy/paste-valid. If command behavior changes, update:
+  - `README.md`
+  - `docs/quickstart.md`
+  - `docs/cli-reference.md`
+  - `scripts/docs-smoke.sh`
 
 ## Suggested first contributions
 

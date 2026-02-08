@@ -19,7 +19,7 @@ func runInstall(args []string) {
 	aemPath := fs.String("aem", "", "agent extension manifest (json)")
 	policyPath := fs.String("policy", "", "install policy file (json)")
 	dest := fs.String("dest", "", "destination directory")
-	dieIf(fs.Parse(args))
+	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 || *sigPath == "" || *dest == "" || *aemPath == "" || *policyPath == "" {
 		dieIf(fmt.Errorf("usage: agentsec install <artifact.aext> --sig <sig.json> (--pub <pubkey.json> | --allow-embedded-key) --aem <aem.json> --policy <policy.json> --dest <dir>"))
 	}

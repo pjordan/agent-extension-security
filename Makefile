@@ -1,6 +1,6 @@
 BINARY=agentsec
 
-.PHONY: build test cover fmt fmt-check lint hooks clean
+.PHONY: build test cover docs-smoke fmt fmt-check lint hooks clean
 
 build:
 	@mkdir -p bin
@@ -14,6 +14,9 @@ cover:
 	go test -coverprofile=.cover_internal.out ./internal/...; \
 	total=$$(go tool cover -func=.cover_internal.out | awk '/^total:/{gsub("%","",$$3); print $$3}'); \
 	awk -v t="$$total" 'BEGIN { if (t < 80.0) { printf "coverage %.1f%% is below 80.0%%\n", t; exit 1 } else { printf "coverage %.1f%% (threshold 80.0%%)\n", t } }'
+
+docs-smoke: build
+	bash scripts/docs-smoke.sh
 
 fmt:
 	gofmt -w .

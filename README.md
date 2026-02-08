@@ -1,32 +1,28 @@
-# Agent Extension Security (agentsec)
+# Agent Extension Security (`agentsec`)
 
 [![CI](https://github.com/pjordan/agent-extension-security/actions/workflows/ci.yml/badge.svg)](https://github.com/pjordan/agent-extension-security/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/pjordan/agent-extension-security/actions/workflows/codeql.yml/badge.svg)](https://github.com/pjordan/agent-extension-security/actions/workflows/codeql.yml)
+[![Docs](https://github.com/pjordan/agent-extension-security/actions/workflows/docs.yml/badge.svg)](https://github.com/pjordan/agent-extension-security/actions/workflows/docs.yml)
 [![Release](https://img.shields.io/github/v/release/pjordan/agent-extension-security)](https://github.com/pjordan/agent-extension-security/releases)
 [![License](https://img.shields.io/github/license/pjordan/agent-extension-security)](https://github.com/pjordan/agent-extension-security/blob/main/LICENSE)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/pjordan/agent-extension-security)](https://github.com/pjordan/agent-extension-security/blob/main/go.mod)
 
-**Agent Extension Security** is an open-source reference implementation for **supply chain security** in agent ecosystems:
-Agent Skills, MCP servers, plugins, and connectors.
+Open-source reference implementation for supply chain security in agent ecosystems (skills, MCP servers, plugins, connectors).
 
-This repo provides:
+## What this repo provides
 
-- `agentsec` CLI: package, sign, verify, scan, and install agent extensions
-- A starter **spec**: Agent Extension Manifest (AEM (JSON) + Agent Permission Manifest (APM) (planned)
-- A simple, embeddable **policy engine**
-- Example extensions (Skill + MCP server skeleton)
+- `agentsec` CLI to package, sign, verify, scan, and install extensions
+- Starter manifest and policy model (AEM now, APM planned)
+- Hardened archive handling and strict manifest/policy parsing
+- Example extensions (skill + MCP placeholder)
 
-## Why this exists
+## Documentation
 
-Knowledge-work agents are becoming *action systems* (email, calendar, docs, tickets).
-Extensions are powerful—and therefore a high-value attack surface. This project makes it easier to adopt:
-
-- **Signed artifacts**
-- **Verifiable provenance**
-- **SBOMs**
-- **Automated scanning**
-- **Least-privilege permissions**
-- **Safe install/update policies**
+- Docs site: https://pjordan.github.io/agent-extension-security/
+- Quickstart: `docs/quickstart.md`
+- CLI reference: `docs/cli-reference.md`
+- Security model: `docs/threat-model.md`, `docs/security-hardening.md`, `docs/permissions.md`
+- Production readiness boundaries: `docs/production-readiness.md`
 
 ## Quickstart
 
@@ -34,52 +30,64 @@ Extensions are powerful—and therefore a high-value attack surface. This projec
 make build
 ./bin/agentsec version
 
-# Package an example skill
+mkdir -p ./_demo
 ./bin/agentsec package ./examples/skills/hello-world --out ./_demo/hello-world.aext
 
-# Generate & validate a manifest
 ./bin/agentsec manifest init ./examples/skills/hello-world \
   --id com.example.hello-world --type skill --version 0.1.0 --out ./_demo/aem.json
 ./bin/agentsec manifest validate ./_demo/aem.json
 
-# Generate SBOM & provenance (minimal reference formats)
 ./bin/agentsec sbom ./_demo/hello-world.aext --out ./_demo/sbom.spdx.json
 ./bin/agentsec provenance ./_demo/hello-world.aext \
   --source-repo https://github.com/pjordan/agent-extension-security \
   --source-rev "$(git rev-parse HEAD)" \
   --out ./_demo/provenance.json
+./bin/agentsec scan ./_demo/hello-world.aext --out ./_demo/scan.json
 
-# Generate a dev keypair, sign, verify, then install
 ./bin/agentsec keygen --out ./_demo/devkey.json
 ./bin/agentsec sign ./_demo/hello-world.aext --key ./_demo/devkey.json --out ./_demo/hello-world.sig.json
 ./bin/agentsec verify ./_demo/hello-world.aext --sig ./_demo/hello-world.sig.json --pub ./_demo/devkey.json
-./bin/agentsec install ./_demo/hello-world.aext --sig ./_demo/hello-world.sig.json \
-  --pub ./_demo/devkey.json --aem ./_demo/aem.json --policy ./docs/policy.example.json \
+
+./bin/agentsec install ./_demo/hello-world.aext \
+  --sig ./_demo/hello-world.sig.json \
+  --pub ./_demo/devkey.json \
+  --aem ./_demo/aem.json \
+  --policy ./docs/policy.example.json \
   --dest ./_demo/install
 ```
 
-For a more complete walkthrough, see **[GETTING_STARTED.md](GETTING_STARTED.md)**.
+Or run the scripted flow:
 
-## Status
+```bash
+bash scripts/demo.sh
+```
 
-This is an initial scaffold intended to be easy to extend.
-The signing flow currently supports **local dev keys (ed25519)** out of the box.
-Keyless Sigstore flows are represented as placeholders under `docs/sigstore.md`.
+## Current status
 
-Security hardening notes:
-- `verify` now requires a trusted key (`--pub`) by default.
-- `install` now enforces policy checks against the provided AEM and policy file.
-- `manifest init` now defaults to least privilege (empty file/network/process grants).
-- archive packaging/extraction blocks symlink entries and enforces unzip limits.
+This is an initial scaffold designed to be easy to extend.
 
-For details, see **[docs/security-hardening.md](docs/security-hardening.md)**.
+Implemented hardening includes:
+
+- Trusted-key verification by default (`--pub`)
+- Install-time policy enforcement (`--aem` + `--policy`)
+- Least-privilege defaults for generated manifests
+- Symlink/path/resource hardening during archive package/extract
+- Strict JSON decoding for manifest and policy files
+
+Planned production-grade additions:
+
+- Sigstore/Cosign keyless signing and identity verification
+- SLSA/in-toto provenance
+- Real SBOM generation and deeper scanning
+
+See `docs/production-readiness.md` for details.
 
 ## Contributing and security
 
-- Contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
-- Security policy: [SECURITY.md](SECURITY.md)
-- Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- Contributing: `CONTRIBUTING.md`
+- Security policy: `SECURITY.md`
+- Code of conduct: `CODE_OF_CONDUCT.md`
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE).
+Apache-2.0 (`LICENSE`).

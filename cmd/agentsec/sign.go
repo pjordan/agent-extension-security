@@ -11,7 +11,7 @@ func runSign(args []string) {
 	fs := newFlagSet("sign")
 	keyPath := fs.String("key", "", "dev key file (json with private key)")
 	out := fs.String("out", "", "output signature file (json)")
-	dieIf(fs.Parse(args))
+	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 || *keyPath == "" || *out == "" {
 		dieIf(fmt.Errorf("usage: agentsec sign <artifact.aext> --key <devkey.json> --out <sig.json>"))
 	}
@@ -39,7 +39,7 @@ func runVerify(args []string) {
 	sigPath := fs.String("sig", "", "signature file (json)")
 	pubPath := fs.String("pub", "", "trusted pubkey file (json)")
 	allowEmbeddedKey := fs.Bool("allow-embedded-key", false, "allow trusting signature public_key (insecure/dev-only)")
-	dieIf(fs.Parse(args))
+	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 || *sigPath == "" {
 		dieIf(fmt.Errorf("usage: agentsec verify <artifact.aext> --sig <sig.json> (--pub <pubkey.json> | --allow-embedded-key)"))
 	}

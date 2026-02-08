@@ -9,7 +9,7 @@ import (
 func runKeygen(args []string) {
 	fs := newFlagSet("keygen")
 	out := fs.String("out", "", "output key file (json)")
-	dieIf(fs.Parse(args))
+	dieIf(parseInterspersed(fs, args))
 	if *out == "" {
 		dieIf(fmt.Errorf("--out is required"))
 	}

@@ -27,7 +27,7 @@ func runProvenance(args []string) {
 	out := fs.String("out", "", "output provenance json path")
 	sourceRepo := fs.String("source-repo", "", "source repository url")
 	sourceRev := fs.String("source-rev", "", "source revision (commit/tag)")
-	dieIf(fs.Parse(args))
+	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 || *out == "" || *sourceRepo == "" || *sourceRev == "" {
 		dieIf(fmt.Errorf("usage: agentsec provenance <artifact.aext> --source-repo <url> --source-rev <rev> --out <prov.json>"))
 	}

@@ -9,7 +9,7 @@ import (
 func runPackage(args []string) {
 	fs := newFlagSet("package")
 	out := fs.String("out", "", "output artifact path (.aext)")
-	dieIf(fs.Parse(args))
+	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 {
 		dieIf(fmt.Errorf("usage: agentsec package <dir> --out <artifact.aext>"))
 	}

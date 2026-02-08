@@ -29,7 +29,7 @@ type Finding struct {
 func runScan(args []string) {
 	fs := newFlagSet("scan")
 	out := fs.String("out", "", "output scan report json path")
-	dieIf(fs.Parse(args))
+	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 || *out == "" {
 		dieIf(fmt.Errorf("usage: agentsec scan <artifact.aext> --out <scan.json>"))
 	}
