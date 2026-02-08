@@ -4,6 +4,7 @@
 
 ```text
 agentsec version
+agentsec init <dir> --id <id> --type <skill|mcp-server|plugin> [--version <ver>]
 agentsec keygen --out <file>
 agentsec package <dir> --out <artifact.aext>
 agentsec manifest init <dir> --id <id> --type <skill|mcp-server|plugin> --version <ver> --out <aem.json>
@@ -14,6 +15,7 @@ agentsec scan <artifact.aext> --out <scan.json>
 agentsec sign <artifact.aext> --key <devkey.json> --out <sig.json>
 agentsec verify <artifact.aext> --sig <sig.json> (--pub <pubkey.json> | --allow-embedded-key)
 agentsec install <artifact.aext> --sig <sig.json> (--pub <pubkey.json> | --allow-embedded-key) --aem <aem.json> --policy <policy.json> --dest <dir>
+agentsec install <artifact.aext> --dev --aem <aem.json> --dest <dir>
 ```
 
 Flags may appear before or after positional arguments.
@@ -23,6 +25,30 @@ Flags may appear before or after positional arguments.
 ### `version`
 
 Print the CLI version string.
+
+### `init`
+
+Scaffold a new extension project with a manifest, dev signing key, and policy file.
+
+```bash
+./bin/agentsec init ./my-skill --id com.example.my-skill --type skill
+```
+
+Creates the target directory (if needed) containing:
+
+- `aem.json` — AEM manifest with least-privilege defaults
+- `devkey.json` — Ed25519 dev signing keypair (mode 0600)
+- `policy.json` — warn-mode policy for development
+
+Flags:
+
+| Flag | Required | Default | Description |
+|------|----------|---------|-------------|
+| `--id` | Yes | — | Extension identifier (e.g., `com.example.hello`) |
+| `--type` | Yes | — | Extension type: `skill`, `mcp-server`, or `plugin` |
+| `--version` | No | `0.1.0` | Semantic version |
+
+Will not overwrite existing files. Edit the generated `aem.json` to declare the permissions your extension actually needs.
 
 ### `keygen`
 
@@ -112,3 +138,15 @@ Verify signature, evaluate policy against AEM, then extract artifact.
   --policy ./docs/policy.example.json \
   --dest ./_demo/install
 ```
+
+**Dev mode:** Skip signature verification and use a permissive warn-only policy (for local development only):
+
+```bash
+./bin/agentsec install ./_demo/hello-world.aext \
+  --dev \
+  --aem ./_demo/aem.json \
+  --dest ./_demo/install
+```
+
+!!! warning
+    `--dev` mode skips signature verification entirely. Do not use in production.

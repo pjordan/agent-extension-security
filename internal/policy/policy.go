@@ -38,3 +38,9 @@ func Evaluate(p *Policy, aem *manifest.AEM) []string {
 	}
 	return findings
 }
+
+// DefaultPermissivePolicy returns a warn-only policy with no deny rules.
+// Used by --dev mode to allow installation without a policy file.
+func DefaultPermissivePolicy() *Policy {
+	return &Policy{Mode: "warn"}
+}

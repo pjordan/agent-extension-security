@@ -7,6 +7,7 @@ Thanks for contributing! This repo is intentionally small and easy to extend.
 - Go 1.23+
 - `make build` builds `./bin/agentsec`
 - `make test` runs unit tests
+- `make examples-test` validates example extensions (manifests, packaging, scanning)
 - `bash scripts/docs-smoke.sh` runs the documented quickstart flow
 - `make fmt-check` verifies formatting
 - `make lint` runs static analysis (`golangci-lint`)

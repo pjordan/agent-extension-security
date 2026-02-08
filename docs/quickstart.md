@@ -7,6 +7,27 @@ This walkthrough takes you from source checkout to a signed, verified, policy-ch
 - Go 1.23+
 - Make (optional)
 
+## Express path (3 commands)
+
+Scaffold a new extension, package it, and install it in dev mode:
+
+```bash
+make build
+
+# Scaffold a new extension project
+./bin/agentsec init ./my-skill --id com.example.my-skill --type skill
+
+# Edit my-skill/aem.json to declare the permissions your extension needs, then:
+./bin/agentsec package ./my-skill --out my-skill.aext
+
+# Install in dev mode (skips signature verification, uses permissive policy)
+./bin/agentsec install my-skill.aext --dev --aem my-skill/aem.json --dest ./installed
+```
+
+When you are ready for production, follow the full flow below to add signing and policy enforcement.
+
+## Full flow
+
 ## 1) Build
 
 ```bash

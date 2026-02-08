@@ -1,29 +1,55 @@
 # Getting Started
 
-The canonical quickstart now lives at `docs/quickstart.md` (also published at the docs site).
+Get from zero to a working extension in under a minute.
 
-## Fast path
+## 1) Install
 
 ```bash
 go install github.com/pjordan/agent-extension-security/cmd/agentsec@latest
-agentsec version
 ```
 
-Or build locally:
+Or build from source:
 
 ```bash
 make build
-bash scripts/demo.sh
 ```
 
-## Step-by-step path
+## 2) Scaffold a new extension
 
-Follow: `docs/quickstart.md`
+```bash
+agentsec init ./my-skill --id com.example.my-skill --type skill
+```
 
-## What to read next
+This creates `my-skill/` with:
+- `aem.json` — manifest with least-privilege defaults
+- `devkey.json` — Ed25519 dev signing keypair
+- `policy.json` — warn-mode policy for development
 
-- CLI reference: `docs/cli-reference.md`
-- Install and release verification: `docs/install.md`
-- Security hardening: `docs/security-hardening.md`
-- Threat model: `docs/threat-model.md`
-- Production readiness boundaries: `docs/production-readiness.md`
+## 3) Declare permissions
+
+Edit `my-skill/aem.json` to declare what your extension needs:
+
+```json
+{
+  "permissions": {
+    "process": { "allow_shell": true },
+    "network": { "domains": ["api.example.com"] }
+  }
+}
+```
+
+## 4) Package and install (dev mode)
+
+```bash
+agentsec package ./my-skill --out my-skill.aext
+agentsec install my-skill.aext --dev --aem my-skill/aem.json --dest ./installed
+```
+
+## Next steps
+
+- Add signing and policy enforcement: [Full quickstart](docs/quickstart.md)
+- CLI reference: [docs/cli-reference.md](docs/cli-reference.md)
+- Troubleshooting: [docs/troubleshooting.md](docs/troubleshooting.md)
+- How agentsec compares to alternatives: [docs/comparison.md](docs/comparison.md)
+- Security model: [docs/threat-model.md](docs/threat-model.md)
+- Production readiness: [docs/production-readiness.md](docs/production-readiness.md)

@@ -29,6 +29,21 @@ type Finding struct {
 func runScan(args []string) {
 	fs := newFlagSet("scan")
 	out := fs.String("out", "", "output scan report json path")
+	fs.Usage = func() {
+		fmt.Fprint(os.Stderr, `Usage: agentsec scan <artifact.aext> --out <scan.json>
+
+Heuristic scan of an artifact for risky patterns. Checks SKILL.md, .sh, and
+.ps1 files for patterns like curl|sh, base64|sh, global npm install, etc.
+Produces a risk score (0-100) and findings report.
+
+Flags:
+`)
+		fs.PrintDefaults()
+		fmt.Fprint(os.Stderr, `
+Example:
+  agentsec scan my-skill.aext --out scan-report.json
+`)
+	}
 	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 || *out == "" {
 		dieIf(fmt.Errorf("usage: agentsec scan <artifact.aext> --out <scan.json>"))

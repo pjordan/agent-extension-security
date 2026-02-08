@@ -24,6 +24,21 @@ type RefSBOM struct {
 func runSBOM(args []string) {
 	fs := newFlagSet("sbom")
 	out := fs.String("out", "", "output sbom json path")
+	fs.Usage = func() {
+		fmt.Fprint(os.Stderr, `Usage: agentsec sbom <artifact.aext> --out <sbom.json>
+
+Generate a reference SBOM (Software Bill of Materials) for an artifact.
+This is a placeholder format — use Syft or a real SPDX/CycloneDX generator
+for production.
+
+Flags:
+`)
+		fs.PrintDefaults()
+		fmt.Fprint(os.Stderr, `
+Example:
+  agentsec sbom my-skill.aext --out sbom.json
+`)
+	}
 	dieIf(parseInterspersed(fs, args))
 	if fs.NArg() < 1 || *out == "" {
 		dieIf(fmt.Errorf("usage: agentsec sbom <artifact.aext> --out <sbom.json>"))

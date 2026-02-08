@@ -31,4 +31,6 @@ nav:
   - Specs:
       - AEM Schema: spec-aem.md
       - APM Schema: spec-apm.md
+  - Troubleshooting: troubleshooting.md
+  - Comparison: comparison.md
   - Production Readiness: production-readiness.md

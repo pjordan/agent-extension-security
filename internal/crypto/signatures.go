@@ -48,11 +48,11 @@ func Verify(sig *Signature, digest string, pub ed25519.PublicKey) error {
 func LoadSignature(path string) (*Signature, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("load signature %s: %w", path, err)
 	}
 	var s Signature
 	if err := json.Unmarshal(b, &s); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("load signature %s: %w", path, err)
 	}
 	return &s, nil
 }
