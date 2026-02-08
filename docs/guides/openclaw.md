@@ -64,7 +64,7 @@ agentsec install my-openclaw-skill.aext --dev --aem my-openclaw-skill/aem.json -
 
 ## Scanner limitations
 
-The current `agentsec scan` heuristics inspect `SKILL.md`, `.sh`, and `.ps1` files. If your skill corpus is primarily `.mdc`, scanner findings may be limited. Consider extending scanner rules for `.mdc` content — see [Contributing](../../CONTRIBUTING.md) for how to add scan rules.
+The current `agentsec scan` heuristics inspect `SKILL.md`, `.sh`, and `.ps1` files. If your skill corpus is primarily `.mdc`, scanner findings may be limited. Consider extending scanner rules for `.mdc` content — see [Contributing](https://github.com/pjordan/agent-extension-security/blob/main/CONTRIBUTING.md) for how to add scan rules.
 
 ## Next steps
 
