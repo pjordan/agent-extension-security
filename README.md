@@ -24,6 +24,19 @@ Open-source reference implementation for supply chain security in agent ecosyste
 - Security model: `docs/threat-model.md`, `docs/security-hardening.md`, `docs/permissions.md`
 - Production readiness boundaries: `docs/production-readiness.md`
 
+## Install
+
+Install directly with Go (no Make required):
+
+```bash
+go install github.com/pjordan/agent-extension-security/cmd/agentsec@latest
+agentsec version
+```
+
+Or use prebuilt release archives with checksum verification:
+
+- `docs/install.md`
+
 ## Quickstart
 
 ```bash

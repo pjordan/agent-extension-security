@@ -3,6 +3,13 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
+)
+
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
 )
 
 func main() {
@@ -15,7 +22,7 @@ func main() {
 
 	switch cmd {
 	case "version":
-		fmt.Println("agentsec v0.1.0 (scaffold)")
+		fmt.Println(versionString())
 	case "keygen":
 		runKeygen(args)
 	case "package":
@@ -39,6 +46,21 @@ func main() {
 		usage()
 		os.Exit(2)
 	}
+}
+
+func versionString() string {
+	base := fmt.Sprintf("agentsec %s", version)
+	var metadata []string
+	if commit != "" && commit != "none" {
+		metadata = append(metadata, "commit="+commit)
+	}
+	if date != "" && date != "unknown" {
+		metadata = append(metadata, "built="+date)
+	}
+	if len(metadata) == 0 {
+		return base
+	}
+	return fmt.Sprintf("%s (%s)", base, strings.Join(metadata, ", "))
 }
 
 func usage() {

@@ -1,38 +1,69 @@
 # Install And Release Verification
 
-## Download from GitHub Releases
+## Option 1: Install with `go install` (no Make required)
 
-Release binaries are published by OS/arch under:
+```bash
+go install github.com/pjordan/agent-extension-security/cmd/agentsec@latest
+agentsec version
+```
+
+If `agentsec` is not found, add `$(go env GOPATH)/bin` to your `PATH`.
+
+## Option 2: Download release archives
+
+Release archives are published at:
 
 - [GitHub Releases](https://github.com/pjordan/agent-extension-security/releases)
 
-Each release includes per-artifact checksum files and a `checksums.txt` aggregate file.
+Artifact naming:
 
-## Verify checksums
+- Linux/macOS: `agentsec_<version>_<os>_<arch>.tar.gz`
+- Windows: `agentsec_<version>_windows_amd64.zip`
+- Checksums: `checksums.txt`
+
+### Verify checksums
 
 On Linux/macOS:
 
 ```bash
-sha256sum -c checksums.txt --ignore-missing
+sha256sum -c checksums.txt
 ```
 
 On macOS with `shasum`:
 
 ```bash
-shasum -a 256 agentsec_darwin_arm64
+shasum -a 256 agentsec_v0.1.0_darwin_arm64.tar.gz
 ```
 
 On Windows PowerShell:
 
 ```powershell
-Get-FileHash .\agentsec_windows_amd64.exe -Algorithm SHA256
+Get-FileHash .\agentsec_v0.1.0_windows_amd64.zip -Algorithm SHA256
 ```
 
-## Optional: build from source
+### Install from archive
+
+Linux/macOS:
+
+```bash
+tar -xzf agentsec_v0.1.0_darwin_arm64.tar.gz
+install -m 0755 agentsec /usr/local/bin/agentsec
+```
+
+Windows PowerShell:
+
+```powershell
+Expand-Archive .\agentsec_v0.1.0_windows_amd64.zip -DestinationPath .
+Move-Item .\agentsec.exe "$env:USERPROFILE\bin\agentsec.exe"
+```
+
+## Option 3: Build from source
 
 ```bash
 git clone https://github.com/pjordan/agent-extension-security.git
 cd agent-extension-security
-make build
+go build -trimpath -o ./bin/agentsec ./cmd/agentsec
 ./bin/agentsec version
 ```
+
+`make build` and `make install` are convenience wrappers around the same Go toolchain flow.

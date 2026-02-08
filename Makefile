@@ -1,10 +1,18 @@
 BINARY=agentsec
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
+COMMIT ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo none)
+DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+LDFLAGS=-X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(DATE)
+GO_BUILD_FLAGS=-trimpath -ldflags "$(LDFLAGS)"
 
-.PHONY: build test cover docs-smoke fmt fmt-check lint hooks clean
+.PHONY: build install test cover docs-smoke fmt fmt-check lint hooks clean
 
 build:
 	@mkdir -p bin
-	go build -o bin/$(BINARY) ./cmd/agentsec
+	go build $(GO_BUILD_FLAGS) -o bin/$(BINARY) ./cmd/agentsec
+
+install:
+	go install $(GO_BUILD_FLAGS) ./cmd/agentsec
 
 test:
 	go test ./...

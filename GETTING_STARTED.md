@@ -5,6 +5,13 @@ The canonical quickstart now lives at `docs/quickstart.md` (also published at th
 ## Fast path
 
 ```bash
+go install github.com/pjordan/agent-extension-security/cmd/agentsec@latest
+agentsec version
+```
+
+Or build locally:
+
+```bash
 make build
 bash scripts/demo.sh
 ```
