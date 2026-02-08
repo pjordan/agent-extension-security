@@ -20,8 +20,9 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Quickstart: quickstart.md
-  - Skills Guide: skills-integration.md
   - Install & Release Verification: install.md
+  - Examples & Policies: examples.md
+  - Skills Guide: skills-integration.md
   - CLI Reference: cli-reference.md
   - Security Model:
       - Threat Model: threat-model.md
@@ -31,6 +32,6 @@ nav:
   - Specs:
       - AEM Schema: spec-aem.md
       - APM Schema: spec-apm.md
-  - Troubleshooting: troubleshooting.md
   - Comparison: comparison.md
   - Production Readiness: production-readiness.md
+  - Troubleshooting: troubleshooting.md

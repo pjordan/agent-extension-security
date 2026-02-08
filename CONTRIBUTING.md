@@ -19,10 +19,10 @@ Thanks for contributing! This repo is intentionally small and easy to extend.
 - Install docs tooling with `pip install -r docs/requirements.txt`.
 - Run `mkdocs build --strict` locally before larger docs PRs.
 - Keep command examples copy/paste-valid. If command behavior changes, update:
-  - `README.md`
-  - `docs/quickstart.md`
+  - `docs/quickstart.md` (authoritative full walkthrough)
   - `docs/cli-reference.md`
   - `scripts/docs-smoke.sh`
+  - The README contains only the 3-command express path — update it only if `init`, `package`, or `install --dev` change.
 
 ## Suggested first contributions
 
