@@ -22,7 +22,13 @@ nav:
   - Quickstart: quickstart.md
   - Install & Release Verification: install.md
   - Examples & Policies: examples.md
-  - Skills Guide: skills-integration.md
+  - Guides:
+      - Overview: guides/index.md
+      - Claude Code Skills: guides/claude-code.md
+      - Claude Code Verification Hook: guides/claude-code-hook.md
+      - OpenClaw Skills: guides/openclaw.md
+      - Codex Skills: guides/codex.md
+      - Generic Pipeline: guides/pipeline.md
   - CLI Reference: cli-reference.md
   - Security Model:
       - Threat Model: threat-model.md

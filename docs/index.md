@@ -31,7 +31,12 @@ See the [CLI Reference](cli-reference.md) for full command details.
 
 **Integrating**
 
-- [Skills Guide](skills-integration.md) — applying agentsec to real skill ecosystems
+- [Guides](guides/index.md) — platform-specific walkthroughs
+    - [Claude Code](guides/claude-code.md) — secure and install skills
+    - [Claude Code Hook](guides/claude-code-hook.md) — pre-load verification
+    - [OpenClaw](guides/openclaw.md) — `.mdc` skill security
+    - [Codex](guides/codex.md) — Codex skill security
+    - [Generic Pipeline](guides/pipeline.md) — the full pipeline for any format
 - [Examples & Policies](examples.md) — permission gradient and policy interaction
 
 **Security model**
