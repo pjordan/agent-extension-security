@@ -55,16 +55,17 @@ make build && make test && make examples-test && bash scripts/docs-smoke.sh
 
 When CLI commands or flags change, update:
 
-1. `docs/quickstart.md` — authoritative full walkthrough
-2. `docs/cli-reference.md` — every command and flag
+1. `docs/creating/quickstart.md` — creator walkthrough
+2. `docs/reference/cli.md` — every command and flag
 3. `scripts/docs-smoke.sh` — smoke test must match real commands
-4. `docs/guides/` — platform-specific guides if affected
+4. `docs/creating/platforms/` — platform-specific guides if affected
 
 The README only has the 3-command express path. Update it only if `init`, `package`, or `install --dev` change.
 
 When manifest/policy semantics change, also update:
 
-- `docs/spec-aem.md` and/or `docs/spec-apm.md`
-- `docs/permissions.md`
-- `docs/threat-model.md` (if threat assumptions changed)
+- `docs/reference/aem-schema.md`
+- `docs/creating/permissions.md`
+- `docs/consuming/threat-model.md` (if threat assumptions changed)
 - `docs/examples.md` (example manifests and policies)
+- `docs/consuming/policy.md` and `docs/reference/policy-schema.md`

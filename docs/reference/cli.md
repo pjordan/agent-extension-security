@@ -1,5 +1,22 @@
 # CLI Reference
 
+## Command overview
+
+| Command | Persona | Description |
+|---------|---------|-------------|
+| `version` | Both | Print CLI version |
+| `init` | Creator | Scaffold a new extension project |
+| `package` | Creator | Zip a directory into a `.aext` artifact |
+| `manifest init` | Creator | Create an AEM manifest with least-privilege defaults |
+| `manifest validate` | Both | Validate manifest schema and constraints |
+| `sbom` | Creator | Generate reference SBOM |
+| `provenance` | Creator | Generate reference provenance record |
+| `scan` | Both | Run heuristic scan on artifact contents |
+| `keygen` | Creator | Generate an Ed25519 dev keypair |
+| `sign` | Creator | Sign an artifact digest |
+| `verify` | Consumer | Verify signature with a trusted key |
+| `install` | Consumer | Verify, enforce policy, and extract |
+
 ## Global usage
 
 ```text
@@ -20,18 +37,16 @@ agentsec install <artifact.aext> --dev --aem <aem.json> --dest <dir>
 
 Flags may appear before or after positional arguments.
 
-## Commands
+---
 
-### `version`
-
-Print the CLI version string.
+## Creator commands
 
 ### `init`
 
 Scaffold a new extension project with a manifest, dev signing key, and policy file.
 
 ```bash
-./bin/agentsec init ./my-skill --id com.example.my-skill --type skill
+agentsec init ./my-skill --id com.example.my-skill --type skill
 ```
 
 Creates the target directory (if needed) containing:
@@ -39,8 +54,6 @@ Creates the target directory (if needed) containing:
 - `aem.json` — AEM manifest with least-privilege defaults
 - `devkey.json` — Ed25519 dev signing keypair (mode 0600)
 - `policy.json` — warn-mode policy for development
-
-Flags:
 
 | Flag | Required | Default | Description |
 |------|----------|---------|-------------|
@@ -55,15 +68,15 @@ Will not overwrite existing files. Edit the generated `aem.json` to declare the 
 Generate an Ed25519 dev keypair JSON.
 
 ```bash
-./bin/agentsec keygen --out ./_demo/devkey.json
+agentsec keygen --out devkey.json
 ```
 
 ### `package`
 
-Zip a directory into a `.aext` artifact.
+Zip a directory into a `.aext` artifact. Rejects symlinks and non-regular files.
 
 ```bash
-./bin/agentsec package ./examples/skills/hello-world --out ./_demo/hello-world.aext
+agentsec package ./my-skill --out my-skill.aext
 ```
 
 ### `manifest init`
@@ -71,16 +84,16 @@ Zip a directory into a `.aext` artifact.
 Create an AEM JSON manifest with least-privilege defaults.
 
 ```bash
-./bin/agentsec manifest init ./examples/skills/hello-world \
-  --id com.example.hello-world --type skill --version 0.1.0 --out ./_demo/aem.json
+agentsec manifest init ./my-skill \
+  --id com.example.my-skill --type skill --version 0.1.0 --out aem.json
 ```
 
 ### `manifest validate`
 
-Validate manifest schema/version/type/semver checks.
+Validate manifest schema, type, and version constraints.
 
 ```bash
-./bin/agentsec manifest validate ./_demo/aem.json
+agentsec manifest validate aem.json
 ```
 
 ### `sbom`
@@ -88,7 +101,7 @@ Validate manifest schema/version/type/semver checks.
 Emit a reference SBOM JSON with artifact digest metadata.
 
 ```bash
-./bin/agentsec sbom ./_demo/hello-world.aext --out ./_demo/sbom.spdx.json
+agentsec sbom my-skill.aext --out sbom.spdx.json
 ```
 
 ### `provenance`
@@ -96,10 +109,10 @@ Emit a reference SBOM JSON with artifact digest metadata.
 Emit reference provenance JSON with source metadata and digest.
 
 ```bash
-./bin/agentsec provenance ./_demo/hello-world.aext \
-  --source-repo https://github.com/pjordan/agent-extension-security \
+agentsec provenance my-skill.aext \
+  --source-repo https://github.com/your-org/your-repo \
   --source-rev "$(git rev-parse HEAD)" \
-  --out ./_demo/provenance.json
+  --out provenance.json
 ```
 
 ### `scan`
@@ -107,7 +120,7 @@ Emit reference provenance JSON with source metadata and digest.
 Run heuristic scanning on `SKILL.md`, `.sh`, and `.ps1` files in the artifact.
 
 ```bash
-./bin/agentsec scan ./_demo/hello-world.aext --out ./_demo/scan.json
+agentsec scan my-skill.aext --out scan.json
 ```
 
 ### `sign`
@@ -115,38 +128,65 @@ Run heuristic scanning on `SKILL.md`, `.sh`, and `.ps1` files in the artifact.
 Sign an artifact digest with a local Ed25519 dev key.
 
 ```bash
-./bin/agentsec sign ./_demo/hello-world.aext --key ./_demo/devkey.json --out ./_demo/hello-world.sig.json
+agentsec sign my-skill.aext --key devkey.json --out my-skill.sig.json
 ```
+
+---
+
+## Consumer commands
 
 ### `verify`
 
 Verify signature using a trusted public key (`--pub`) or insecure embedded-key mode.
 
 ```bash
-./bin/agentsec verify ./_demo/hello-world.aext --sig ./_demo/hello-world.sig.json --pub ./_demo/devkey.json
+agentsec verify my-skill.aext --sig my-skill.sig.json --pub publisher-key.json
 ```
+
+| Flag | Description |
+|------|-------------|
+| `--pub <file>` | Trusted public key file (recommended) |
+| `--allow-embedded-key` | Use key from signature file (insecure, dev-only) |
 
 ### `install`
 
 Verify signature, evaluate policy against AEM, then extract artifact.
 
 ```bash
-./bin/agentsec install ./_demo/hello-world.aext \
-  --sig ./_demo/hello-world.sig.json \
-  --pub ./_demo/devkey.json \
-  --aem ./_demo/aem.json \
-  --policy ./docs/policy.example.json \
-  --dest ./_demo/install
+agentsec install my-skill.aext \
+  --sig my-skill.sig.json \
+  --pub publisher-key.json \
+  --aem aem.json \
+  --policy policy.json \
+  --dest ./installed/my-skill
 ```
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--sig` | Yes (unless `--dev`) | Signature file |
+| `--pub` | Yes (unless `--dev` or `--allow-embedded-key`) | Trusted public key |
+| `--aem` | Yes | AEM manifest file |
+| `--policy` | Yes (unless `--dev`) | Policy file |
+| `--dest` | Yes | Installation directory |
+| `--dev` | No | Dev mode: skip signature, permissive policy |
 
 **Dev mode:** Skip signature verification and use a permissive warn-only policy (for local development only):
 
 ```bash
-./bin/agentsec install ./_demo/hello-world.aext \
-  --dev \
-  --aem ./_demo/aem.json \
-  --dest ./_demo/install
+agentsec install my-skill.aext --dev --aem aem.json --dest ./installed/my-skill
 ```
 
 !!! warning
     `--dev` mode skips signature verification entirely. Do not use in production.
+
+---
+
+## Common commands
+
+### `version`
+
+Print the CLI version string.
+
+```bash
+agentsec version
+```

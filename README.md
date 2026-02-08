@@ -27,7 +27,7 @@ agentsec package ./my-skill --out my-skill.aext
 agentsec install my-skill.aext --dev --aem my-skill/aem.json --dest ./installed
 ```
 
-Ready for signing and policy enforcement? See the [full quickstart](https://pjordan.github.io/agent-extension-security/quickstart/).
+Ready for signing and policy enforcement? See the [Creator Quickstart](https://pjordan.github.io/agent-extension-security/creating/quickstart/).
 
 ## Documentation
 
@@ -35,19 +35,20 @@ Full docs at **<https://pjordan.github.io/agent-extension-security/>**
 
 | Topic | Link |
 |-------|------|
-| Quickstart | [quickstart](https://pjordan.github.io/agent-extension-security/quickstart/) |
-| CLI Reference | [cli-reference](https://pjordan.github.io/agent-extension-security/cli-reference/) |
+| Creating Extensions | [Creator Quickstart](https://pjordan.github.io/agent-extension-security/creating/quickstart/) |
+| Consuming Extensions | [Consumer Quickstart](https://pjordan.github.io/agent-extension-security/consuming/quickstart/) |
+| CLI Reference | [reference/cli](https://pjordan.github.io/agent-extension-security/reference/cli/) |
 | Install & Release Verification | [install](https://pjordan.github.io/agent-extension-security/install/) |
-| Guides | [Claude Code](https://pjordan.github.io/agent-extension-security/guides/claude-code/), [OpenClaw](https://pjordan.github.io/agent-extension-security/guides/openclaw/), [Codex](https://pjordan.github.io/agent-extension-security/guides/codex/), [Pipeline](https://pjordan.github.io/agent-extension-security/guides/pipeline/) |
+| Platform Guides | [Claude Code](https://pjordan.github.io/agent-extension-security/creating/platforms/claude-code/), [OpenClaw](https://pjordan.github.io/agent-extension-security/creating/platforms/openclaw/), [Codex](https://pjordan.github.io/agent-extension-security/creating/platforms/codex/) |
 | Examples & Policies | [examples](https://pjordan.github.io/agent-extension-security/examples/) |
-| Security Model | [threat-model](https://pjordan.github.io/agent-extension-security/threat-model/), [security-hardening](https://pjordan.github.io/agent-extension-security/security-hardening/), [permissions](https://pjordan.github.io/agent-extension-security/permissions/) |
-| Production Readiness | [production-readiness](https://pjordan.github.io/agent-extension-security/production-readiness/) |
+| Security Model | [Threat Model](https://pjordan.github.io/agent-extension-security/consuming/threat-model/), [Security Guarantees](https://pjordan.github.io/agent-extension-security/consuming/security/) |
+| Production Readiness | [reference/production-readiness](https://pjordan.github.io/agent-extension-security/reference/production-readiness/) |
 | Troubleshooting | [troubleshooting](https://pjordan.github.io/agent-extension-security/troubleshooting/) |
 | Comparison | [comparison](https://pjordan.github.io/agent-extension-security/comparison/) |
 
 ## Current status
 
-This is a reference scaffold — hardened where it matters, but not yet a full production supply-chain platform. See [Production Readiness](https://pjordan.github.io/agent-extension-security/production-readiness/) for the capability matrix and roadmap.
+This is a reference scaffold — hardened where it matters, but not yet a full production supply-chain platform. See [Production Readiness](https://pjordan.github.io/agent-extension-security/reference/production-readiness/) for the capability matrix and roadmap.
 
 ## Contributing and security
 

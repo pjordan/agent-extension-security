@@ -1,4 +1,4 @@
-# Securing OpenClaw Skills with agentsec
+# Securing OpenClaw Skills
 
 This guide covers applying `agentsec` supply-chain security to OpenClaw skill packages.
 
@@ -35,6 +35,8 @@ my-openclaw-skill/
 
 Edit `my-openclaw-skill/aem.json` to match your skill's actual needs. Start with the least-privilege defaults from `agentsec init` and add only what's required.
 
+See [Declaring Permissions](../permissions.md) for guidance on choosing values.
+
 ## 4) Package, sign, and install
 
 ```bash
@@ -64,10 +66,10 @@ agentsec install my-openclaw-skill.aext --dev --aem my-openclaw-skill/aem.json -
 
 ## Scanner limitations
 
-The current `agentsec scan` heuristics inspect `SKILL.md`, `.sh`, and `.ps1` files. If your skill corpus is primarily `.mdc`, scanner findings may be limited. Consider extending scanner rules for `.mdc` content — see [Contributing](https://github.com/pjordan/agent-extension-security/blob/main/CONTRIBUTING.md) for how to add scan rules.
+The current `agentsec scan` heuristics inspect `SKILL.md`, `.sh`, and `.ps1` files. If your skill corpus is primarily `.mdc`, scanner findings may be limited. Consider extending scanner rules for `.mdc` content — see [Contributing](../../contributing.md) for how to add scan rules.
 
 ## Next steps
 
-- [Generic Pipeline](pipeline.md) — full attestation and CI/CD details
-- [Examples & Policies](../examples.md) — permission gradients and policy templates
-- [CLI Reference](../cli-reference.md) — every command and flag
+- [CI/CD Pipeline](../ci-cd.md) — full attestation and CI/CD details
+- [Examples & Policies](../../examples.md) — permission gradients and policy templates
+- [CLI Reference](../../reference/cli.md) — every command and flag

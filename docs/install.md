@@ -1,6 +1,8 @@
-# Install And Release Verification
+# Install & Release Verification
 
-## Option 1: Install with `go install` (no Make required)
+Both extension creators and consumers need the `agentsec` CLI. Choose the installation method that fits your environment.
+
+## Option 1: Install with `go install`
 
 ```bash
 go install github.com/pjordan/agent-extension-security/cmd/agentsec@latest
@@ -23,39 +25,39 @@ Artifact naming:
 
 ### Verify checksums
 
-On Linux/macOS:
+=== "Linux"
 
-```bash
-sha256sum -c checksums.txt
-```
+    ```bash
+    sha256sum -c checksums.txt
+    ```
 
-On macOS with `shasum`:
+=== "macOS"
 
-```bash
-shasum -a 256 agentsec_v0.1.0_darwin_arm64.tar.gz
-```
+    ```bash
+    shasum -a 256 agentsec_v0.1.0_darwin_arm64.tar.gz
+    ```
 
-On Windows PowerShell:
+=== "Windows PowerShell"
 
-```powershell
-Get-FileHash .\agentsec_v0.1.0_windows_amd64.zip -Algorithm SHA256
-```
+    ```powershell
+    Get-FileHash .\agentsec_v0.1.0_windows_amd64.zip -Algorithm SHA256
+    ```
 
 ### Install from archive
 
-Linux/macOS:
+=== "Linux / macOS"
 
-```bash
-tar -xzf agentsec_v0.1.0_darwin_arm64.tar.gz
-install -m 0755 agentsec /usr/local/bin/agentsec
-```
+    ```bash
+    tar -xzf agentsec_v0.1.0_darwin_arm64.tar.gz
+    install -m 0755 agentsec /usr/local/bin/agentsec
+    ```
 
-Windows PowerShell:
+=== "Windows PowerShell"
 
-```powershell
-Expand-Archive .\agentsec_v0.1.0_windows_amd64.zip -DestinationPath .
-Move-Item .\agentsec.exe "$env:USERPROFILE\bin\agentsec.exe"
-```
+    ```powershell
+    Expand-Archive .\agentsec_v0.1.0_windows_amd64.zip -DestinationPath .
+    Move-Item .\agentsec.exe "$env:USERPROFILE\bin\agentsec.exe"
+    ```
 
 ## Option 3: Build from source
 
@@ -67,3 +69,8 @@ go build -trimpath -o ./bin/agentsec ./cmd/agentsec
 ```
 
 `make build` and `make install` are convenience wrappers around the same Go toolchain flow.
+
+## Next steps
+
+- **Building an extension?** Start with the [Creator Quickstart](creating/quickstart.md)
+- **Installing an extension?** Start with the [Consumer Quickstart](consuming/quickstart.md)
