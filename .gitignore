@@ -1,0 +1,7 @@
+# Build outputs
+bin/
+_demo/
+dist/
+
+# macOS
+.DS_Store
