@@ -2,6 +2,10 @@
 bin/
 _demo/
 dist/
+.gocache/
+.cache/
+.golangci-cache/
+.cover_internal.out
 
 # macOS
 .DS_Store

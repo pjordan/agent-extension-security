@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+set -eu
+
+echo "Running pre-commit checks..."
+
+files="$(gofmt -l .)"
+if [ -n "$files" ]; then
+  echo "Unformatted files:"
+  echo "$files"
+  echo "Run: make fmt"
+  exit 1
+fi
+
+go vet ./...
+go test ./...

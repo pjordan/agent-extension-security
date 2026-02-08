@@ -1,48 +1,48 @@
 package main
 
 import (
-    "fmt"
-    "os"
+	"fmt"
+	"os"
 )
 
 func main() {
-    if len(os.Args) < 2 {
-        usage()
-        os.Exit(2)
-    }
-    cmd := os.Args[1]
-    args := os.Args[2:]
+	if len(os.Args) < 2 {
+		usage()
+		os.Exit(2)
+	}
+	cmd := os.Args[1]
+	args := os.Args[2:]
 
-    switch cmd {
-    case "version":
-        fmt.Println("agentsec v0.1.0 (scaffold)")
-    case "keygen":
-        runKeygen(args)
-    case "package":
-        runPackage(args)
-    case "manifest":
-        runManifest(args)
-    case "sbom":
-        runSBOM(args)
-    case "provenance":
-        runProvenance(args)
-    case "scan":
-        runScan(args)
-    case "sign":
-        runSign(args)
-    case "verify":
-        runVerify(args)
-    case "install":
-        runInstall(args)
-    default:
-        fmt.Fprintf(os.Stderr, "unknown command: %s\n\n", cmd)
-        usage()
-        os.Exit(2)
-    }
+	switch cmd {
+	case "version":
+		fmt.Println("agentsec v0.1.0 (scaffold)")
+	case "keygen":
+		runKeygen(args)
+	case "package":
+		runPackage(args)
+	case "manifest":
+		runManifest(args)
+	case "sbom":
+		runSBOM(args)
+	case "provenance":
+		runProvenance(args)
+	case "scan":
+		runScan(args)
+	case "sign":
+		runSign(args)
+	case "verify":
+		runVerify(args)
+	case "install":
+		runInstall(args)
+	default:
+		fmt.Fprintf(os.Stderr, "unknown command: %s\n\n", cmd)
+		usage()
+		os.Exit(2)
+	}
 }
 
 func usage() {
-    fmt.Print(`agentsec - agent extension security (scaffold)
+	fmt.Print(`agentsec - agent extension security (scaffold)
 
 Usage:
   agentsec version

@@ -1,5 +1,11 @@
 # Agent Extension Security (agentsec)
 
+[![CI](https://github.com/pjordan/agent-extension-security/actions/workflows/ci.yml/badge.svg)](https://github.com/pjordan/agent-extension-security/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/pjordan/agent-extension-security/actions/workflows/codeql.yml/badge.svg)](https://github.com/pjordan/agent-extension-security/actions/workflows/codeql.yml)
+[![Release](https://img.shields.io/github/v/release/pjordan/agent-extension-security)](https://github.com/pjordan/agent-extension-security/releases)
+[![License](https://img.shields.io/github/license/pjordan/agent-extension-security)](https://github.com/pjordan/agent-extension-security/blob/main/LICENSE)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/pjordan/agent-extension-security)](https://github.com/pjordan/agent-extension-security/blob/main/go.mod)
+
 **Agent Extension Security** is an open-source reference implementation for **supply chain security** in agent ecosystems:
 Agent Skills, MCP servers, plugins, and connectors.
 
@@ -58,7 +64,12 @@ This is an initial scaffold intended to be easy to extend.
 The signing flow currently supports **local dev keys (ed25519)** out of the box.
 Keyless Sigstore flows are represented as placeholders under `docs/sigstore.md`.
 
+## Contributing and security
+
+- Contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Security policy: [SECURITY.md](SECURITY.md)
+- Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).
-

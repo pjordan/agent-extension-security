@@ -7,6 +7,9 @@ Thanks for contributing! This repo is intentionally small and easy to extend.
 - Go 1.22+
 - `make build` builds `./bin/agentsec`
 - `make test` runs unit tests
+- `make fmt-check` verifies formatting
+- `make lint` runs static analysis (`golangci-lint`)
+- `make hooks` enables local pre-commit checks
 
 ## Suggested first contributions
 
@@ -21,3 +24,9 @@ Thanks for contributing! This repo is intentionally small and easy to extend.
 - Prefer small, composable packages under `internal/`
 - Add tests for anything that parses manifests or touches security boundaries
 
+## Pull request expectations
+
+- Keep pull requests scoped to one logical change.
+- Update docs when commands, behavior, or security assumptions change.
+- Include tests for new behavior and edge cases.
+- Use clear commit messages that explain intent and security implications when relevant.

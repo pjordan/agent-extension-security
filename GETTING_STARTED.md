@@ -14,6 +14,12 @@ make build
 ./bin/agentsec version
 ```
 
+Optional but recommended for contributors:
+
+```bash
+make hooks
+```
+
 ## Quick demo (skill)
 
 ### 1) Package an example skill
@@ -68,4 +74,3 @@ make build
 - Read `docs/permissions.md`
 - Review `spec/aem/v0/aem.schema.json` and `spec/apm/v0/apm.schema.json`
 - See `docs/sigstore.md` for how Sigstore/Cosign would plug in
-
