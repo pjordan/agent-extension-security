@@ -1,6 +1,7 @@
 package crypto
 
 import (
+	"os"
 	"path/filepath"
 	"testing"
 )
@@ -112,5 +113,15 @@ func TestSignatureSaveLoadRoundTrip(t *testing.T) {
 
 	if loaded.Alg != sig.Alg || loaded.Digest != sig.Digest || loaded.Sig != sig.Sig || loaded.PublicKey != sig.PublicKey {
 		t.Fatal("loaded signature does not match saved signature")
+	}
+}
+
+func TestLoadSignatureRejectsInvalidJSON(t *testing.T) {
+	p := filepath.Join(t.TempDir(), "sig.json")
+	if err := os.WriteFile(p, []byte("{not-json"), 0o644); err != nil {
+		t.Fatalf("WriteFile() error = %v", err)
+	}
+	if _, err := LoadSignature(p); err == nil {
+		t.Fatal("LoadSignature() expected JSON parse error, got nil")
 	}
 }

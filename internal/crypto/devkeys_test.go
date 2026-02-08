@@ -90,3 +90,26 @@ func TestSaveAndLoadDevKeyRoundTrip(t *testing.T) {
 		t.Fatalf("loaded private mismatch")
 	}
 }
+
+func TestKeyDecodeValidation(t *testing.T) {
+	t.Run("public key rejects invalid base64", func(t *testing.T) {
+		k := &DevKeyFile{Type: "ed25519", Public: "!!!"}
+		if _, err := k.PublicKey(); err == nil {
+			t.Fatal("PublicKey() expected decode error, got nil")
+		}
+	})
+
+	t.Run("private key missing", func(t *testing.T) {
+		k := &DevKeyFile{Type: "ed25519", Public: "AQID"}
+		if _, err := k.PrivateKey(); err == nil {
+			t.Fatal("PrivateKey() expected missing private error, got nil")
+		}
+	})
+
+	t.Run("private key rejects invalid base64", func(t *testing.T) {
+		k := &DevKeyFile{Type: "ed25519", Public: "AQID", Private: "!!!"}
+		if _, err := k.PrivateKey(); err == nil {
+			t.Fatal("PrivateKey() expected decode error, got nil")
+		}
+	})
+}

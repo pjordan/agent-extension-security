@@ -3,6 +3,7 @@ package util
 import (
 	"archive/zip"
 	"bytes"
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -171,5 +172,65 @@ func TestUnzipFileBlocksSuspiciousCompressionRatio(t *testing.T) {
 	dest := filepath.Join(t.TempDir(), "out")
 	if err := UnzipFile(zipPath, dest); err == nil || !strings.Contains(err.Error(), "suspicious compression ratio") {
 		t.Fatalf("UnzipFile() error = %v, want suspicious compression ratio", err)
+	}
+}
+
+func TestUnzipFileRejectsSymlinkEntries(t *testing.T) {
+	zipPath := filepath.Join(t.TempDir(), "symlink.zip")
+	f, err := os.Create(zipPath)
+	if err != nil {
+		t.Fatalf("os.Create() error = %v", err)
+	}
+	zw := zip.NewWriter(f)
+	h := &zip.FileHeader{Name: "link"}
+	h.SetMode(os.ModeSymlink | 0o777)
+	w, err := zw.CreateHeader(h)
+	if err != nil {
+		t.Fatalf("CreateHeader() error = %v", err)
+	}
+	if _, err := w.Write([]byte("target.txt")); err != nil {
+		t.Fatalf("Write() error = %v", err)
+	}
+	if err := zw.Close(); err != nil {
+		t.Fatalf("zw.Close() error = %v", err)
+	}
+	if err := f.Close(); err != nil {
+		t.Fatalf("f.Close() error = %v", err)
+	}
+
+	dest := filepath.Join(t.TempDir(), "out")
+	if err := UnzipFile(zipPath, dest); err == nil || !strings.Contains(err.Error(), "refusing to extract symlink") {
+		t.Fatalf("UnzipFile() error = %v, want symlink rejection", err)
+	}
+}
+
+func TestUnzipFileRejectsTooManyEntries(t *testing.T) {
+	zipPath := filepath.Join(t.TempDir(), "many.zip")
+	f, err := os.Create(zipPath)
+	if err != nil {
+		t.Fatalf("os.Create() error = %v", err)
+	}
+	zw := zip.NewWriter(f)
+	for i := 0; i < maxArchiveEntries+1; i++ {
+		name := fmt.Sprintf("f-%05d.txt", i)
+		w, err := zw.Create(name)
+		if err != nil {
+			t.Fatalf("zw.Create(%q) error = %v", name, err)
+		}
+		if _, err := w.Write([]byte("x")); err != nil {
+			t.Fatalf("Write(%q) error = %v", name, err)
+		}
+	}
+	if err := zw.Close(); err != nil {
+		t.Fatalf("zw.Close() error = %v", err)
+	}
+	if err := f.Close(); err != nil {
+		t.Fatalf("f.Close() error = %v", err)
+	}
+
+	dest := filepath.Join(t.TempDir(), "out")
+	err = UnzipFile(zipPath, dest)
+	if err == nil || !strings.Contains(err.Error(), "too many entries") {
+		t.Fatalf("UnzipFile() error = %v, want too many entries", err)
 	}
 }
