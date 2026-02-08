@@ -132,6 +132,66 @@ The packaging/signature/policy flow is identical across runtimes. What changes i
 - Apply the same sign/verify/policy workflow before sharing internally.
 - Promote verified files into the target Claude skill path used by your team/repo.
 
+#### Claude Code pre-load enforcement (hook pattern)
+
+Claude Code does not expose a dedicated "skill load" hook event. The practical equivalent is a `PreToolUse` hook that blocks tool calls which modify skill directories unless they go through your verified installer path.
+
+1. Add a `PreToolUse` hook in `.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/enforce-skill-verify.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+2. Create `.claude/hooks/enforce-skill-verify.sh`:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+INPUT="$(cat)"
+CMD="$(printf '%s' "${INPUT}" | jq -r '.tool_input.command // ""')"
+
+# Only gate commands that touch Claude skill directories.
+if [[ "${CMD}" != *".claude/skills/"* ]]; then
+  exit 0
+fi
+
+# Require the team's verified install wrapper.
+if [[ "${CMD}" == *"./scripts/install-verified-skill.sh"* ]]; then
+  exit 0
+fi
+
+jq -n '{
+  hookSpecificOutput: {
+    hookEventName: "PreToolUse",
+    permissionDecision: "deny",
+    permissionDecisionReason: "Skill directory writes must use ./scripts/install-verified-skill.sh (agentsec verify + policy install)."
+  }
+}'
+```
+
+3. Route all skill updates through `./scripts/install-verified-skill.sh`, which should run:
+   - `agentsec verify` with trusted `--pub`
+   - `agentsec manifest validate`
+   - `agentsec install --aem ... --policy ...`
+   - promotion from staging to `.claude/skills/...` only on success
+
+This gives you a real, enforceable pre-load gate in Claude workflows.
+
 ### OpenClaw skills
 
 - Package the OpenClaw skill folder (commonly `.mdc`-based skill content).
