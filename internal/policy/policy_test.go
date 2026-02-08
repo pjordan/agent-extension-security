@@ -88,4 +88,37 @@ func TestLoadPolicy(t *testing.T) {
 			t.Fatal("Load() expected error, got nil")
 		}
 	})
+
+	t.Run("rejects invalid mode", func(t *testing.T) {
+		p := filepath.Join(t.TempDir(), "policy.json")
+		if err := os.WriteFile(p, []byte(`{"mode":"monitor"}`), 0o644); err != nil {
+			t.Fatalf("WriteFile() error = %v", err)
+		}
+
+		if _, err := Load(p); err == nil {
+			t.Fatal("Load() expected invalid mode error, got nil")
+		}
+	})
+
+	t.Run("rejects unknown fields", func(t *testing.T) {
+		p := filepath.Join(t.TempDir(), "policy.json")
+		if err := os.WriteFile(p, []byte(`{"mode":"warn","unknown":true}`), 0o644); err != nil {
+			t.Fatalf("WriteFile() error = %v", err)
+		}
+
+		if _, err := Load(p); err == nil {
+			t.Fatal("Load() expected unknown field error, got nil")
+		}
+	})
+
+	t.Run("rejects trailing json values", func(t *testing.T) {
+		p := filepath.Join(t.TempDir(), "policy.json")
+		if err := os.WriteFile(p, []byte(`{"mode":"warn"}{"extra":true}`), 0o644); err != nil {
+			t.Fatalf("WriteFile() error = %v", err)
+		}
+
+		if _, err := Load(p); err == nil {
+			t.Fatal("Load() expected trailing-json error, got nil")
+		}
+	})
 }

@@ -52,8 +52,10 @@ make build
 # Generate a dev keypair, sign, verify, then install
 ./bin/agentsec keygen --out ./_demo/devkey.json
 ./bin/agentsec sign ./_demo/hello-world.aext --key ./_demo/devkey.json --out ./_demo/hello-world.sig.json
-./bin/agentsec verify ./_demo/hello-world.aext --sig ./_demo/hello-world.sig.json
-./bin/agentsec install ./_demo/hello-world.aext --sig ./_demo/hello-world.sig.json --dest ./_demo/install
+./bin/agentsec verify ./_demo/hello-world.aext --sig ./_demo/hello-world.sig.json --pub ./_demo/devkey.json
+./bin/agentsec install ./_demo/hello-world.aext --sig ./_demo/hello-world.sig.json \
+  --pub ./_demo/devkey.json --aem ./_demo/aem.json --policy ./docs/policy.example.json \
+  --dest ./_demo/install
 ```
 
 For a more complete walkthrough, see **[GETTING_STARTED.md](GETTING_STARTED.md)**.
@@ -63,6 +65,14 @@ For a more complete walkthrough, see **[GETTING_STARTED.md](GETTING_STARTED.md)*
 This is an initial scaffold intended to be easy to extend.
 The signing flow currently supports **local dev keys (ed25519)** out of the box.
 Keyless Sigstore flows are represented as placeholders under `docs/sigstore.md`.
+
+Security hardening notes:
+- `verify` now requires a trusted key (`--pub`) by default.
+- `install` now enforces policy checks against the provided AEM and policy file.
+- `manifest init` now defaults to least privilege (empty file/network/process grants).
+- archive packaging/extraction blocks symlink entries and enforces unzip limits.
+
+For details, see **[docs/security-hardening.md](docs/security-hardening.md)**.
 
 ## Contributing and security
 

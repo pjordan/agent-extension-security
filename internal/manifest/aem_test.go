@@ -35,6 +35,13 @@ func TestAEMValidate(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "wrong schema",
+			mutator: func(a *AEM) {
+				a.Schema = "aessf.dev/aem/v999"
+			},
+			wantErr: true,
+		},
+		{
 			name: "missing id",
 			mutator: func(a *AEM) {
 				a.ID = ""
@@ -52,6 +59,13 @@ func TestAEMValidate(t *testing.T) {
 			name: "missing version",
 			mutator: func(a *AEM) {
 				a.Version = ""
+			},
+			wantErr: true,
+		},
+		{
+			name: "invalid semver",
+			mutator: func(a *AEM) {
+				a.Version = "v1"
 			},
 			wantErr: true,
 		},
@@ -80,6 +94,26 @@ func TestLoadAEM(t *testing.T) {
 		}
 		if _, err := LoadAEM(p); err == nil {
 			t.Fatal("LoadAEM() expected error, got nil")
+		}
+	})
+
+	t.Run("reject unknown fields", func(t *testing.T) {
+		p := filepath.Join(t.TempDir(), "aem.json")
+		if err := os.WriteFile(p, []byte(`{"schema":"aessf.dev/aem/v0","id":"com.example.test","type":"skill","version":"0.1.0","unknown":true}`), 0o644); err != nil {
+			t.Fatalf("WriteFile() error = %v", err)
+		}
+		if _, err := LoadAEM(p); err == nil {
+			t.Fatal("LoadAEM() expected error for unknown field, got nil")
+		}
+	})
+
+	t.Run("reject trailing json values", func(t *testing.T) {
+		p := filepath.Join(t.TempDir(), "aem.json")
+		if err := os.WriteFile(p, []byte(`{"schema":"aessf.dev/aem/v0","id":"com.example.test","type":"skill","version":"0.1.0"}{"extra":true}`), 0o644); err != nil {
+			t.Fatalf("WriteFile() error = %v", err)
+		}
+		if _, err := LoadAEM(p); err == nil {
+			t.Fatal("LoadAEM() expected trailing-json error, got nil")
 		}
 	})
 

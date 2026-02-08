@@ -44,8 +44,8 @@ func runManifestInit(args []string) {
 		Version: *ver,
 		Permissions: manifest.Permissions{
 			Files: manifest.FilePerms{
-				Read:  []string{"~/Documents/**"},
-				Write: []string{"~/Documents/**"},
+				Read:  []string{},
+				Write: []string{},
 			},
 			Network: manifest.NetPerms{
 				Domains:         []string{},
@@ -53,7 +53,7 @@ func runManifestInit(args []string) {
 			},
 			Process: manifest.ProcessPerm{
 				AllowShell:      false,
-				AllowSubprocess: true,
+				AllowSubprocess: false,
 			},
 		},
 	}

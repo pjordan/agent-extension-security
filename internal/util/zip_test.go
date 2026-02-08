@@ -2,8 +2,11 @@ package util
 
 import (
 	"archive/zip"
+	"bytes"
 	"os"
 	"path/filepath"
+	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -121,5 +124,52 @@ func TestUnzipFileBlocksZipSlip(t *testing.T) {
 	dest := filepath.Join(t.TempDir(), "out")
 	if err := UnzipFile(zipPath, dest); err == nil {
 		t.Fatal("UnzipFile() expected ZipSlip protection error, got nil")
+	}
+}
+
+func TestZipDirRejectsSymlinks(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("symlink behavior differs on windows")
+	}
+
+	src := t.TempDir()
+	target := filepath.Join(src, "target.txt")
+	if err := os.WriteFile(target, []byte("target"), 0o644); err != nil {
+		t.Fatalf("WriteFile(target) error = %v", err)
+	}
+	if err := os.Symlink(target, filepath.Join(src, "link.txt")); err != nil {
+		t.Fatalf("Symlink() error = %v", err)
+	}
+
+	zipPath := filepath.Join(t.TempDir(), "bundle.zip")
+	if err := ZipDir(src, zipPath); err == nil || !strings.Contains(err.Error(), "refusing to package symlink") {
+		t.Fatalf("ZipDir() error = %v, want symlink rejection", err)
+	}
+}
+
+func TestUnzipFileBlocksSuspiciousCompressionRatio(t *testing.T) {
+	zipPath := filepath.Join(t.TempDir(), "ratio.zip")
+	f, err := os.Create(zipPath)
+	if err != nil {
+		t.Fatalf("os.Create() error = %v", err)
+	}
+	zw := zip.NewWriter(f)
+	w, err := zw.Create("huge.txt")
+	if err != nil {
+		t.Fatalf("zw.Create() error = %v", err)
+	}
+	if _, err := w.Write(bytes.Repeat([]byte("0"), 2<<20)); err != nil {
+		t.Fatalf("Write() error = %v", err)
+	}
+	if err := zw.Close(); err != nil {
+		t.Fatalf("zw.Close() error = %v", err)
+	}
+	if err := f.Close(); err != nil {
+		t.Fatalf("f.Close() error = %v", err)
+	}
+
+	dest := filepath.Join(t.TempDir(), "out")
+	if err := UnzipFile(zipPath, dest); err == nil || !strings.Contains(err.Error(), "suspicious compression ratio") {
+		t.Fatalf("UnzipFile() error = %v, want suspicious compression ratio", err)
 	}
 }

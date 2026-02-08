@@ -54,8 +54,8 @@ Usage:
   agentsec provenance <artifact.aext> --source-repo <url> --source-rev <rev> --out <provenance.json>
   agentsec scan <artifact.aext> --out <scan.json>
   agentsec sign <artifact.aext> --key <devkey.json> --out <sig.json>
-  agentsec verify <artifact.aext> --sig <sig.json> [--pub <pubkey.json>]
-  agentsec install <artifact.aext> --sig <sig.json> --dest <dir>
+  agentsec verify <artifact.aext> --sig <sig.json> (--pub <pubkey.json> | --allow-embedded-key)
+  agentsec install <artifact.aext> --sig <sig.json> (--pub <pubkey.json> | --allow-embedded-key) --aem <aem.json> --policy <policy.json> --dest <dir>
 
 Notes:
   - This initial scaffold uses local ed25519 dev keys.

@@ -1,9 +1,12 @@
 package manifest
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
+	"regexp"
 )
 
 // AEM is an initial, intentionally small Agent Extension Manifest.
@@ -40,21 +43,28 @@ type ProcessPerm struct {
 	AllowSubprocess bool `json:"allow_subprocess,omitempty"`
 }
 
+var semverPattern = regexp.MustCompile(`^[0-9]+\.[0-9]+\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$`)
+
 func LoadAEM(path string) (*AEM, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 	var m AEM
-	if err := json.Unmarshal(b, &m); err != nil {
+	dec := json.NewDecoder(bytes.NewReader(b))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&m); err != nil {
 		return nil, err
+	}
+	if err := dec.Decode(&struct{}{}); err != io.EOF {
+		return nil, fmt.Errorf("manifest must contain a single JSON object")
 	}
 	return &m, nil
 }
 
 func (m *AEM) Validate() error {
-	if m.Schema == "" {
-		return fmt.Errorf("schema is required")
+	if m.Schema != "aessf.dev/aem/v0" {
+		return fmt.Errorf("schema must be aessf.dev/aem/v0")
 	}
 	if m.ID == "" {
 		return fmt.Errorf("id is required")
@@ -64,8 +74,8 @@ func (m *AEM) Validate() error {
 	default:
 		return fmt.Errorf("type must be skill|mcp-server|plugin")
 	}
-	if m.Version == "" {
-		return fmt.Errorf("version is required")
+	if !semverPattern.MatchString(m.Version) {
+		return fmt.Errorf("version must be semver (e.g., 1.2.3)")
 	}
 	return nil
 }
