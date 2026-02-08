@@ -6,38 +6,51 @@ repo_name: pjordan/agent-extension-security
 theme:
   name: material
   features:
+    - navigation.tabs
     - navigation.sections
-    - navigation.expand
+    - navigation.indexes
     - navigation.top
     - content.code.copy
+    - content.tabs.link
 plugins:
   - search
 markdown_extensions:
   - admonition
   - tables
+  - attr_list
+  - md_in_html
   - toc:
       permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 nav:
   - Home: index.md
-  - Quickstart: quickstart.md
-  - Install & Release Verification: install.md
+  - Install: install.md
+  - Creating Extensions:
+      - creating/index.md
+      - "Quickstart: Package & Sign": creating/quickstart.md
+      - Declaring Permissions: creating/permissions.md
+      - Platform Integration:
+          - Claude Code Skills: creating/platforms/claude-code.md
+          - OpenClaw Skills: creating/platforms/openclaw.md
+          - Codex Skills: creating/platforms/codex.md
+      - CI/CD Pipeline: creating/ci-cd.md
+      - Publishing Checklist: creating/publishing-checklist.md
+  - Consuming Extensions:
+      - consuming/index.md
+      - "Quickstart: Verify & Install": consuming/quickstart.md
+      - Writing Policy: consuming/policy.md
+      - Threat Model: consuming/threat-model.md
+      - Security Guarantees: consuming/security.md
+  - Reference:
+      - reference/index.md
+      - CLI Reference: reference/cli.md
+      - AEM Manifest Schema: reference/aem-schema.md
+      - Policy File Schema: reference/policy-schema.md
+      - Production Readiness: reference/production-readiness.md
   - Examples & Policies: examples.md
-  - Guides:
-      - Overview: guides/index.md
-      - Claude Code Skills: guides/claude-code.md
-      - Claude Code Verification Hook: guides/claude-code-hook.md
-      - OpenClaw Skills: guides/openclaw.md
-      - Codex Skills: guides/codex.md
-      - Generic Pipeline: guides/pipeline.md
-  - CLI Reference: cli-reference.md
-  - Security Model:
-      - Threat Model: threat-model.md
-      - Security Hardening: security-hardening.md
-      - Permissions & Policy: permissions.md
-      - Sigstore Plan: sigstore.md
-  - Specs:
-      - AEM Schema: spec-aem.md
-      - APM Schema: spec-apm.md
   - Comparison: comparison.md
-  - Production Readiness: production-readiness.md
   - Troubleshooting: troubleshooting.md
+  - Contributing: contributing.md

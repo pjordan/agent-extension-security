@@ -1,4 +1,4 @@
-# Securing Codex Skills with agentsec
+# Securing Codex Skills
 
 This guide covers applying `agentsec` supply-chain security to Codex skill packages.
 
@@ -34,6 +34,8 @@ my-codex-skill/
 ## 3) Declare permissions
 
 Edit `my-codex-skill/aem.json` to match your skill's actual needs. Start with the least-privilege defaults from `agentsec init` and add only what's required.
+
+See [Declaring Permissions](../permissions.md) for guidance on choosing values.
 
 ## 4) Package, sign, and install
 
@@ -72,7 +74,6 @@ When receiving skills from others, verify before promoting:
 4. Promote staged files into `$CODEX_HOME/skills/` only after all checks pass
 
 ```bash
-# Verify and install a received skill
 agentsec install received-skill.aext \
   --sig received-skill.sig.json \
   --pub trusted-publisher-key.json \
@@ -81,8 +82,10 @@ agentsec install received-skill.aext \
   --dest "${CODEX_HOME}/skills/received-skill"
 ```
 
+See [Consuming Extensions](../../consuming/quickstart.md) for the full consumer workflow.
+
 ## Next steps
 
-- [Generic Pipeline](pipeline.md) — full attestation and CI/CD details
-- [Examples & Policies](../examples.md) — permission gradients and policy templates
-- [CLI Reference](../cli-reference.md) — every command and flag
+- [CI/CD Pipeline](../ci-cd.md) — full attestation and CI/CD details
+- [Examples & Policies](../../examples.md) — permission gradients and policy templates
+- [CLI Reference](../../reference/cli.md) — every command and flag

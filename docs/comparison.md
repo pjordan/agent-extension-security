@@ -15,7 +15,7 @@ How does `agentsec` compare to other approaches for securing extensions and plug
 | Heuristic scanning | Built-in (SKILL.md, shell scripts) | Not included |
 | Packaging | Built-in `.aext` format | Not included |
 
-**When to use both:** `agentsec` is designed to adopt Sigstore/Cosign for its signing layer (see `docs/sigstore.md`). Use `agentsec` for the full extension security lifecycle; use Cosign when you only need artifact signing.
+**When to use both:** `agentsec` is designed to adopt Sigstore/Cosign for its signing layer (see the [Sigstore roadmap](contributing.md#sigstore-integration)). Use `agentsec` for the full extension security lifecycle; use Cosign when you only need artifact signing.
 
 **Key difference:** Cosign handles *"was this artifact signed by a trusted identity?"* — `agentsec` handles *"what does this extension want to do, and should we allow it?"*
 
@@ -77,4 +77,4 @@ Many teams consider building custom signing, verification, and policy enforcemen
 - Heuristic scanning only (no static analysis or sandbox execution)
 - No runtime enforcement (manifest declares permissions; enforcement is at install time)
 
-See [Production Readiness](production-readiness.md) for the full capability matrix and roadmap.
+See [Production Readiness](reference/production-readiness.md) for the full capability matrix and roadmap.

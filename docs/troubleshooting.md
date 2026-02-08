@@ -177,7 +177,7 @@ The `keygen` command generates local Ed25519 keypairs for development. These key
 - Are stored as plain JSON files
 - Provide integrity verification but not authenticity
 
-For production use, plan to migrate to Sigstore/Cosign keyless signing (see `docs/sigstore.md`).
+For production use, plan to migrate to Sigstore/Cosign keyless signing (see the [Sigstore roadmap](contributing.md#sigstore-integration)).
 
 ### Manifest says "single JSON object"
 

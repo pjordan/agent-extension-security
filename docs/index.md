@@ -3,10 +3,6 @@
 `agentsec` is a reference CLI and policy engine for securing agent extensions —
 skills, MCP servers, plugins, and connectors.
 
-!!! tip "New here?"
-    Jump straight to the [Quickstart](quickstart.md) to scaffold, sign, and
-    install your first extension in under a minute.
-
 ## The pipeline
 
 Every extension goes through a five-stage supply-chain pipeline:
@@ -19,45 +15,54 @@ Every extension goes through a five-stage supply-chain pipeline:
 | **Sign** | `agentsec sign` | Signs the artifact digest with an Ed25519 key |
 | **Install** | `agentsec install` | Verifies signature, enforces policy, then extracts |
 
-See the [CLI Reference](cli-reference.md) for full command details.
-
 ## Choose your path
 
-**Getting started**
+<div class="grid cards" markdown>
 
-- [Quickstart](quickstart.md) — end-to-end walkthrough in 3 minutes
-- [Install & Release Verification](install.md) — prebuilt binaries and checksum verification
-- [Examples & Policies](examples.md) — sample extensions and policy templates
+-   **Building an extension?**
 
-**Integrating**
+    ---
 
-- [Guides](guides/index.md) — platform-specific walkthroughs
-    - [Claude Code](guides/claude-code.md) — secure and install skills
-    - [Claude Code Hook](guides/claude-code-hook.md) — pre-load verification
-    - [OpenClaw](guides/openclaw.md) — `.mdc` skill security
-    - [Codex](guides/codex.md) — Codex skill security
-    - [Generic Pipeline](guides/pipeline.md) — the full pipeline for any format
-- [Examples & Policies](examples.md) — permission gradient and policy interaction
+    Package, sign, and publish skills, MCP servers, or plugins.
 
-**Security model**
+    [:octicons-arrow-right-24: Creator Quickstart](creating/quickstart.md)
 
-- [Threat Model](threat-model.md) — assumptions and trust boundaries
-- [Security Hardening](security-hardening.md) — archive, manifest, and policy hardening
-- [Permissions & Policy](permissions.md) — AEM permissions and deny rules
-- [Sigstore Plan](sigstore.md) — planned keyless signing roadmap
+-   **Installing an extension?**
 
-**Specs & reference**
+    ---
 
-- [AEM Schema](spec-aem.md) — Agent Extension Manifest specification
-- [APM Schema](spec-apm.md) — Agent Policy Manifest specification
-- [CLI Reference](cli-reference.md) — every command and flag
-- [Comparison](comparison.md) — how agentsec compares to alternatives
-- [Troubleshooting](troubleshooting.md) — common errors and fixes
+    Verify, enforce policy, and safely install extensions from others.
+
+    [:octicons-arrow-right-24: Consumer Quickstart](consuming/quickstart.md)
+
+</div>
+
+## What you can do today
+
+- **Scaffold** a new extension project with `agentsec init`
+- **Package** any skill directory into a signed `.aext` artifact
+- **Declare** least-privilege permissions in an AEM manifest
+- **Enforce** install-time policy with deny rules (fail closed or warn)
+- **Verify** signatures against trusted public keys
+- **Scan** skill content and scripts for common risk patterns
+- **Integrate** with [Claude Code](creating/platforms/claude-code.md), [OpenClaw](creating/platforms/openclaw.md), and [Codex](creating/platforms/codex.md)
+
+## Quick links
+
+| Topic | Link |
+|-------|------|
+| Install the CLI | [Install](install.md) |
+| Examples & policy templates | [Examples & Policies](examples.md) |
+| CLI command reference | [CLI Reference](reference/cli.md) |
+| How agentsec compares | [Comparison](comparison.md) |
+| Common errors and fixes | [Troubleshooting](troubleshooting.md) |
+| Security model | [Threat Model](consuming/threat-model.md), [Security Guarantees](consuming/security.md) |
+| Production readiness | [Production Readiness](reference/production-readiness.md) |
 
 ## Project status
 
 This project is intentionally a scaffold: hardened where it matters for a
 reference implementation, but not yet a full production supply-chain platform.
 
-See [Production Readiness](production-readiness.md) for an explicit capability
+See [Production Readiness](reference/production-readiness.md) for an explicit capability
 matrix and next-step roadmap.
