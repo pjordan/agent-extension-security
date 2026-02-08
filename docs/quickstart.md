@@ -4,7 +4,7 @@ This walkthrough takes you from source checkout to a signed, verified, policy-ch
 
 ## Prerequisites
 
-- Go 1.22+
+- Go 1.23+
 - Make (optional)
 
 ## 1) Build

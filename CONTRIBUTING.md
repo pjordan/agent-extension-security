@@ -4,7 +4,7 @@ Thanks for contributing! This repo is intentionally small and easy to extend.
 
 ## Development setup
 
-- Go 1.22+
+- Go 1.23+
 - `make build` builds `./bin/agentsec`
 - `make test` runs unit tests
 - `bash scripts/docs-smoke.sh` runs the documented quickstart flow
