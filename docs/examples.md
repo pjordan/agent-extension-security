@@ -69,3 +69,13 @@ agentsec install file-reader.aext \
 ```
 
 See each example's README for full details on permissions and usage.
+
+## Next steps
+
+See the platform-specific guides for end-to-end walkthroughs:
+
+- [Claude Code Skills](guides/claude-code.md) — secure and install `.claude/skills/` packages
+- [Claude Code Verification Hook](guides/claude-code-hook.md) — add a `PreToolUse` gate
+- [OpenClaw Skills](guides/openclaw.md) — `.mdc` skill security
+- [Codex Skills](guides/codex.md) — Codex skill security
+- [Generic Pipeline](guides/pipeline.md) — the full pipeline for any format

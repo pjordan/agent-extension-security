@@ -38,7 +38,7 @@ Full docs at **<https://pjordan.github.io/agent-extension-security/>**
 | Quickstart | [quickstart](https://pjordan.github.io/agent-extension-security/quickstart/) |
 | CLI Reference | [cli-reference](https://pjordan.github.io/agent-extension-security/cli-reference/) |
 | Install & Release Verification | [install](https://pjordan.github.io/agent-extension-security/install/) |
-| Skills Guide | [skills-integration](https://pjordan.github.io/agent-extension-security/skills-integration/) |
+| Guides | [Claude Code](https://pjordan.github.io/agent-extension-security/guides/claude-code/), [OpenClaw](https://pjordan.github.io/agent-extension-security/guides/openclaw/), [Codex](https://pjordan.github.io/agent-extension-security/guides/codex/), [Pipeline](https://pjordan.github.io/agent-extension-security/guides/pipeline/) |
 | Examples & Policies | [examples](https://pjordan.github.io/agent-extension-security/examples/) |
 | Security Model | [threat-model](https://pjordan.github.io/agent-extension-security/threat-model/), [security-hardening](https://pjordan.github.io/agent-extension-security/security-hardening/), [permissions](https://pjordan.github.io/agent-extension-security/permissions/) |
 | Production Readiness | [production-readiness](https://pjordan.github.io/agent-extension-security/production-readiness/) |
