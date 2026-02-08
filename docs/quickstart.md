@@ -1,83 +1,78 @@
 # Quickstart
 
-This walkthrough takes you from source checkout to a signed, verified, policy-checked install.
+This walkthrough takes you from install to a signed, verified, policy-checked extension.
 
 ## Prerequisites
 
 - Go 1.23+
-- Make (optional)
+
+## Install
+
+```bash
+go install github.com/pjordan/agent-extension-security/cmd/agentsec@latest
+agentsec version
+```
 
 ## Express path (3 commands)
 
 Scaffold a new extension, package it, and install it in dev mode:
 
 ```bash
-make build
-
 # Scaffold a new extension project
-./bin/agentsec init ./my-skill --id com.example.my-skill --type skill
+agentsec init ./my-skill --id com.example.my-skill --type skill
 
 # Edit my-skill/aem.json to declare the permissions your extension needs, then:
-./bin/agentsec package ./my-skill --out my-skill.aext
+agentsec package ./my-skill --out my-skill.aext
 
 # Install in dev mode (skips signature verification, uses permissive policy)
-./bin/agentsec install my-skill.aext --dev --aem my-skill/aem.json --dest ./installed
+agentsec install my-skill.aext --dev --aem my-skill/aem.json --dest ./installed
 ```
 
 When you are ready for production, follow the full flow below to add signing and policy enforcement.
 
 ## Full flow
 
-## 1) Build
-
-```bash
-make build
-./bin/agentsec version
-```
-
-## 2) Package a skill
+### 1) Package a skill
 
 ```bash
 mkdir -p ./_demo
-./bin/agentsec package ./examples/skills/hello-world --out ./_demo/hello-world.aext
+agentsec package ./examples/skills/hello-world --out ./_demo/hello-world.aext
 ```
 
-## 3) Create and validate an AEM manifest
+### 2) Create and validate an AEM manifest
 
 ```bash
-./bin/agentsec manifest init ./examples/skills/hello-world \
+agentsec manifest init ./examples/skills/hello-world \
   --id com.example.hello-world --type skill --version 0.1.0 --out ./_demo/aem.json
 
-./bin/agentsec manifest validate ./_demo/aem.json
+agentsec manifest validate ./_demo/aem.json
 ```
 
-## 4) Generate attestations
+### 3) Generate attestations
 
 ```bash
-./bin/agentsec sbom ./_demo/hello-world.aext --out ./_demo/sbom.spdx.json
+agentsec sbom ./_demo/hello-world.aext --out ./_demo/sbom.spdx.json
 
-./bin/agentsec provenance ./_demo/hello-world.aext \
+agentsec provenance ./_demo/hello-world.aext \
   --source-repo https://github.com/pjordan/agent-extension-security \
   --source-rev "$(git rev-parse HEAD)" \
   --out ./_demo/provenance.json
 
-./bin/agentsec scan ./_demo/hello-world.aext --out ./_demo/scan.json
+agentsec scan ./_demo/hello-world.aext --out ./_demo/scan.json
 ```
 
-## 5) Sign and verify
+### 4) Sign and verify
 
 ```bash
-./bin/agentsec keygen --out ./_demo/devkey.json
-./bin/agentsec sign ./_demo/hello-world.aext --key ./_demo/devkey.json --out ./_demo/hello-world.sig.json
-./bin/agentsec verify ./_demo/hello-world.aext --sig ./_demo/hello-world.sig.json --pub ./_demo/devkey.json
+agentsec keygen --out ./_demo/devkey.json
+agentsec sign ./_demo/hello-world.aext --key ./_demo/devkey.json --out ./_demo/hello-world.sig.json
+agentsec verify ./_demo/hello-world.aext --sig ./_demo/hello-world.sig.json --pub ./_demo/devkey.json
 ```
 
-`--allow-embedded-key` exists for insecure/dev-only compatibility.
-
-## 6) Install with policy enforcement
+### 5) Install with policy enforcement
 
 ```bash
-./bin/agentsec install ./_demo/hello-world.aext \
+agentsec install ./_demo/hello-world.aext \
   --sig ./_demo/hello-world.sig.json \
   --pub ./_demo/devkey.json \
   --aem ./_demo/aem.json \
@@ -85,15 +80,18 @@ mkdir -p ./_demo
   --dest ./_demo/install
 ```
 
-## 7) Validate artifacts
+### 6) Validate artifacts
 
 ```bash
 ls -lah ./_demo
 cat ./_demo/scan.json
 ```
 
-## One-command demo
+## One-command demo (from source)
+
+If you have cloned the repo and want to run the full flow automatically:
 
 ```bash
+make build
 bash scripts/demo.sh
 ```
