@@ -17,6 +17,7 @@
 ## Start here
 
 - New user: [Quickstart](quickstart.md)
+- Applying this to real skill ecosystems: [Skills Guide](skills-integration.md)
 - Installing binaries from releases: [Install & Release Verification](install.md)
 - Full command details: [CLI Reference](cli-reference.md)
 - Security assumptions and controls: [Security Model](threat-model.md)
