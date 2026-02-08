@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Permission Manifest (APM) v0 (scaffold)",
+  "type": "object",
+  "description": "Placeholder; currently permissions live inside AEM. Split in a future revision."
+}

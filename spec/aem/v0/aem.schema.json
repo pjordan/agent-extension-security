@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Extension Manifest (AEM) v0 (scaffold)",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "type",
+    "version",
+    "permissions"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "skill",
+        "mcp-server",
+        "plugin"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_repo": {
+      "type": "string"
+    },
+    "source_rev": {
+      "type": "string"
+    },
+    "permissions": {
+      "type": "object",
+      "properties": {
+        "files": {
+          "type": "object",
+          "properties": {
+            "read": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "write": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "network": {
+          "type": "object",
+          "properties": {
+            "domains": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "allow_ip_literals": {
+              "type": "boolean"
+            }
+          }
+        },
+        "process": {
+          "type": "object",
+          "properties": {
+            "allow_shell": {
+              "type": "boolean"
+            },
+            "allow_subprocess": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  }
+}
